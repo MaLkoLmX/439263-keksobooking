@@ -69,11 +69,13 @@ function getRandomAd(count) {
   return randomOffer;
 };
 
+/*Не получается взять значение из массива.
+Напримую тоже не получилось*/
 function renderMapMarker() { // функция для заполнения шаблона карточки
   var markerElement = pinTemplate.cloneNode(true);
-  markerElement.querySelector('button').style.left = location.x;
-  markerElement.querySelector('button').style.top = location.y;
-  markerElement.querySelector('img').src = author.avatar;
+  markerElement.querySelector('button').style.left = getRandomNumber(300, 900) + 'px';
+  markerElement.querySelector('button').style.top = getRandomNumber(100, 500) + 'px';
+  markerElement.querySelector('img').src = 'img/avatars/user0' + avatar[getRandom(avatar)] + '.png';
   return markerElement;
 }
 
@@ -96,8 +98,12 @@ function renderCard() {
   var cardElementP = cardElement.querySelectorAll('p');
   cardElementP[2].textContent = getRandomNumber(1, 5) + ' для ' + getRandomNumber(1, 10) + ' гостей.';
   cardElementP[3].textContent = 'Заезд после ' + checkin[getRandom(checkin)] + ', выезд до ' + checkin[getRandom(checkin)];
-
-
+  // Опять не уверен в реализации
+  function getLi(li) {
+    return '<li class="feature feature--' + li + '"></li>';
+  }
+  cardElement.querySelector('ul').innerHTML = '';
+  cardElement.querySelector('ul').insertAdjacentHTML('beforeend', getPlaceFeatures().getLi();
   cardElementP[4].textContent = [];
   cardElement.querySelector('img').src = 'img/avatars/user0' + avatar[getRandom(avatar)] + '.png';
   return cardElement;
@@ -105,9 +111,11 @@ function renderCard() {
 
 function showCard(ads) {
   for (var i = 0; i < ads; i++) {
-    fragment.appendChild(renderCard(0));
+    fragment.appendChild(renderMapMarker());
   }
+  fragment.appendChild(renderCard());
   return fragment;
 }
 
-map.appendChild(showCard(1));
+map.appendChild(showCard(0));
+markers.appendChild(showCard(8));
