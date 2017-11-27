@@ -1,6 +1,6 @@
 'use strict';
 // Объявили переменные
-var avatar = ['01', '02', '03', '04', '05', '06', '07', '08'];
+var avatar = ['1', '2', '3', '4', '5', '6', '7', '8'];
 var title = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var type = ['flat', 'house', 'bungalo'];
 var checkin = ['12:00', '13:00', '14:00'];
@@ -14,8 +14,10 @@ map.classList.remove('map--faded'); // удалили класс
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
 
-var card = document.querySelector('.map__pins'); // объявили карточку куда будем добавлять
-var marker = document.querySelector('.map__pin'); // объявили маркер, который будем добавлять
+var markers = document.querySelector('.map__pins'); // маркеры
+var card = document.querySelector('.map__pin'); // карточка
+
+var fragment = document.createDocumentFragment();
 
 function getRandom(rand) {
   return Math.floor(Math.random() * rand.length);
@@ -58,8 +60,8 @@ function getRandomAd(count) {
           photos: [] // пустой массив
         },
         location: {
-          x: getRandomNumber(300, 900) + 20, // случайное число, координата x метки на карте в блоке .tokyo__pin-map от 300 до 900,
-          y: getRandomNumber(100, 500) + 40// случайное число, координата y метки на карте в блоке .tokyo__pin-map от 100 до 500
+          x: getRandomNumber(300, 900) + 'px', // случайное число, координата x метки на карте в блоке .tokyo__pin-map от 300 до 900,
+          y: getRandomNumber(100, 500) + 'px'// случайное число, координата y метки на карте в блоке .tokyo__pin-map от 100 до 500
         }
       }
     ];
@@ -69,25 +71,18 @@ function getRandomAd(count) {
 
 function renderMapMarker() { // функция для заполнения шаблона карточки
   var markerElement = pinTemplate.cloneNode(true);
-  markerElement.querySelector('button').style.left = getRandomNumber(300, 900) + 'px';
-  markerElement.querySelector('button').style.top = getRandomNumber(100, 500) + 'px';
+  markerElement.querySelector('button').style.left = location.x;
+  markerElement.querySelector('button').style.top = location.y;
   markerElement.querySelector('img').src = author.avatar;
   return markerElement;
 }
-var fragment = document.createDocumentFragment();
-function markerCount(ads) {
-  for (var i = 0; i < ads; i++) {
-    fragment.appendChild(renderMapMarker());
-  }
-  return fragment;
-}
 
 // Задание 5
-function renderCard(adObject) {
+function renderCard() {
   var cardElement = cardTemplate.cloneNode(true);
-  cardElement.querySelector('h3').textContent = adObject.offer.title;
-  cardElement.querySelector('small').textContent = adObject.offer.address;
-  cardElement.querySelector('.popup__price').textContent = adObject.offer.price + String.fromCharCode(8381) + '/ночь';
+  cardElement.querySelector('h3').textContent = title[getRandom(title)];
+  cardElement.querySelector('small').textContent = getRandomNumber(300, 900) + ',' + getRandomNumber(100, 500);
+  cardElement.querySelector('.popup__price').textContent = getRandomNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь';
   switch (type[getRandom(type)]) {
     case 'flat':
       cardElement.querySelector('h4').textContent = 'Квартира';
@@ -98,20 +93,21 @@ function renderCard(adObject) {
     case 'house':
       cardElement.querySelector('h4').textContent = 'Дом';
   }
-  cardElement.querySelector('p')[2].textContent = adObject.offer.rooms + ' для ' + adObject.offer.guests + ' гостей.';
-  cardElement.querySelector('p')[3].textContent = 'Заезд после ' + adObject.offer.checkin + ', выезд до ' + adObject.offer.checkout;
+  var cardElementP = cardElement.querySelectorAll('p');
+  cardElementP[2].textContent = getRandomNumber(1, 5) + ' для ' + getRandomNumber(1, 10) + ' гостей.';
+  cardElementP[3].textContent = 'Заезд после ' + checkin[getRandom(checkin)] + ', выезд до ' + checkin[getRandom(checkin)];
 
 
-  cardElement.querySelector('p')[4].textContent = adObject.offer.description;
-  cardElement.querySelector('img')[1].src = adObject.author.avatar;
+  cardElementP[4].textContent = [];
+  cardElement.querySelector('img').src = 'img/avatars/user0' + avatar[getRandom(avatar)] + '.png';
   return cardElement;
 }
 
-function showMarkers(ads) {
+function showCard(ads) {
   for (var i = 0; i < ads; i++) {
-    fragment.appendChild(renderCard());
+    fragment.appendChild(renderCard(0));
   }
   return fragment;
 }
 
-map.appendChild(fragment);
+map.appendChild(showCard(1));
