@@ -3,6 +3,7 @@
 var avatar = ['1', '2', '3', '4', '5', '6', '7', '8'];
 var title = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var type = ['flat', 'house', 'bungalo'];
+var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var checkin = ['12:00', '13:00', '14:00'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var description = '';
@@ -31,60 +32,31 @@ function getPlaceFeatures() {
   var result = [];
   var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   for (var i = 0; i < featuresList.length; i++) {
-    if (getRandomNumber(0, 1)) {
+    if (getRandomNumber(0, 5)) {
       result.push(featuresList[i]);
     }
   }
   return result;
 }
 
-function getRandomAd(count) {
-  var randomOffer = [];
-  for (var i = 0; i < count; i++) {
-    randomOffer[i] = [
-      {
-        author: {
-          avatar: 'img/avatars/user0' + (i + 1) + '.png' // строка, адрес изображения вида img/avatars/user{{xx}}.png
-        },
-        offer: {
-          title: title[getRandom(title)], // строка, заголовок предложения, одно из фиксированных значений
-          address: getRandomNumber(300, 900) + ',' + getRandomNumber(100, 500), // строка, адрес предложения, представляет собой запись вида "{{location.x}}, {{location.y}}"
-          price: getRandomNumber(1000, 1000000), // число, случайная цена от 1000 до 1000000
-          type: type[getRandom(type)], // строка с одним из трех фиксированных значений: flat, house или bungalo
-          rooms: getRandomNumber(1, 5), // число, случайное количество комнат от 1 до 5
-          guests: getRandomNumber(1, 10), // число, случайное количество гостей, которое можно разместить
-          checkin: checkin[getRandom(checkin)], // строка с одним из трех фиксированных значений: 12:00, 13:00 или 14:00,
-          checkout: checkin[getRandom(checkin)], // строка с одним из трех фиксированных значений: 12:00, 13:00 или 14:00
-          features: getPlaceFeatures(), // массив строк случайной длины из ниже предложенных
-          description: '', // пустая строка,
-          photos: [] // пустой массив
-        },
-        location: {
-          x: getRandomNumber(300, 900) + 'px', // случайное число, координата x метки на карте в блоке .tokyo__pin-map от 300 до 900,
-          y: getRandomNumber(100, 500) + 'px'// случайное число, координата y метки на карте в блоке .tokyo__pin-map от 100 до 500
-        }
-      }
-    ];
-  }
-  return randomOffer;
-};
-
-/*Не получается взять значение из массива.
-Напримую тоже не получилось*/
-function renderMapMarker() { // функция для заполнения шаблона карточки
+function renderMapMarker(avatarIndex) { // функция для заполнения шаблона карточки
   var markerElement = pinTemplate.cloneNode(true);
-  markerElement.querySelector('button').style.left = getRandomNumber(300, 900) + 'px';
-  markerElement.querySelector('button').style.top = getRandomNumber(100, 500) + 'px';
-  markerElement.querySelector('img').src = 'img/avatars/user0' + avatar[getRandom(avatar)] + '.png';
+  var index = avatarIndex + 1;
+
+  markerElement.style.left = getRandomNumber(300, 900) + 'px';
+  markerElement.style.top = getRandomNumber(100, 500) + 'px';
+  markerElement.querySelector('img').src = 'img/avatars/user0' + index + '.png';
+
   return markerElement;
 }
 
-// Задание 5
-function renderCard() {
+function renderCard(index) {
   var cardElement = cardTemplate.cloneNode(true);
+  var cardElementP = cardElement.querySelectorAll('p');
   cardElement.querySelector('h3').textContent = title[getRandom(title)];
   cardElement.querySelector('small').textContent = getRandomNumber(300, 900) + ',' + getRandomNumber(100, 500);
   cardElement.querySelector('.popup__price').textContent = getRandomNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь';
+
   switch (type[getRandom(type)]) {
     case 'flat':
       cardElement.querySelector('h4').textContent = 'Квартира';
@@ -95,15 +67,30 @@ function renderCard() {
     case 'house':
       cardElement.querySelector('h4').textContent = 'Дом';
   }
-  var cardElementP = cardElement.querySelectorAll('p');
+
   cardElementP[2].textContent = getRandomNumber(1, 5) + ' для ' + getRandomNumber(1, 10) + ' гостей.';
   cardElementP[3].textContent = 'Заезд после ' + checkin[getRandom(checkin)] + ', выезд до ' + checkin[getRandom(checkin)];
-  // Опять не уверен в реализации
-  function getLi(li) {
-    return '<li class="feature feature--' + li + '"></li>';
+
+  var list = cardElement.querySelector('.popup__features');
+  var listItem = document.createElement('li');
+  list.innerHTML = '';
+  switch (getPlaceFeatures()) {
+    case 'wifi':
+      list.innerHTML = '<li class=feature feature--wifi></li>';
+      break;
+    case 'dishwasher':
+      list.innerHTML = '<li class=feature feature--dishwasher></li>';
+      break;
+    case 'parking':
+      list.innerHTML = '<li class=feature feature--parking></li>';
+    case 'washer':
+      list.innerHTML = '<li class=feature feature--washer></li>';
+    case 'elevator':
+      list.innerHTML = '<li class=feature feature--elevator></li>';
+    case 'conditioner':
+      list.innerHTML = '<li class=feature feature--conditioner></li>';
   }
-  cardElement.querySelector('ul').innerHTML = '';
-  cardElement.querySelector('ul').insertAdjacentHTML('beforeend', getPlaceFeatures().getLi();
+
   cardElementP[4].textContent = [];
   cardElement.querySelector('img').src = 'img/avatars/user0' + avatar[getRandom(avatar)] + '.png';
   return cardElement;
@@ -111,11 +98,10 @@ function renderCard() {
 
 function showCard(ads) {
   for (var i = 0; i < ads; i++) {
-    fragment.appendChild(renderMapMarker());
+    fragment.appendChild(renderMapMarker(i));
   }
   fragment.appendChild(renderCard());
   return fragment;
 }
 
-map.appendChild(showCard(0));
 markers.appendChild(showCard(8));
