@@ -7,7 +7,7 @@ var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'cond
 var checkin = ['12:00', '13:00', '14:00'];
 
 var map = document.querySelector('.map'); // объявили карту
-map.classList.remove('map--faded'); // удалили класс
+// map.classList.remove('map--faded'); // удалили класс
 
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
@@ -84,5 +84,79 @@ function showCard(ads) {
   fragment.appendChild(renderCard());
   return fragment;
 }
-
 markers.appendChild(showCard(8));
+/* -------------------------------
+----------------------------------
+-------Обработка событий ---------
+--------------------------------*/
+// клавиши
+var esc = 27;
+var enter = 13;
+// константы
+var pinMain = map.querySelector('.map__pin--main'); // главный маркер
+var popupClose = map.querySelector('.popup__close'); // крестик
+// удалить с помошью ESC
+function onPopupEscPress(evt) {
+  if (evt.keyCode === esc) {
+    closeCard();
+  }
+}
+// скрыли маркеры
+var pins = map.querySelectorAll('.map__pin');
+for (var i = 1; i < pins.length; i++) {
+  pins[i].classList.add('hidden');
+}
+// скрыли карточку
+var cardPopup = map.querySelector('.map__card');
+cardPopup.classList.add('hidden');
+// Заблокировали поля для ввода
+var fieldset = document.querySelectorAll('fieldset'); // все поля ввода
+for (var j = 1; i < fieldset.length; i++) {
+  fieldset[j].disabled = true;
+}
+// открытие карты
+function openMap() {
+  var form = document.querySelector('.notice__form');
+  map.classList.remove('map--faded');
+  form.classList.remove('notice__form--disabled');
+  cardTemplate.classList.add('hidden');
+  pinTemplate.classList.remove('hidden');
+  for (i = 1; i < pins.length; i++) {
+    pins[i].classList.remove('hidden');
+  }
+  for (i = 0; i < fieldset.length; i++) {
+    fieldset[i].disabled = false;
+  }
+}
+// открытие карточки
+function openCard() {
+  if (pins.classList.contains('map__pin--active')) { // если маркер содержит класс...
+    pins.classList.remove('map__pin--active'); // удаляем у маркера класс
+  } else {
+    pins.classList.add('map__pin--active'); // добавляем выбранному маркеру класс active
+  }
+  cardPopup.classList.remove('hidden'); // и показываем карточку
+  document.removeEventListener('keydown', onPopupEscPress);
+}
+// закрытие карточки
+function closeCard() {
+  cardPopup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+}
+// нажатие на главный маркер
+pinMain.addEventListener('click', function () {
+  openMap();
+});
+// нажатие на любой элемент соответствующий значению pins
+document.body.addEventListener('click', function (evt) {
+  if (evt.target.nodeName === pins && evt.keyCode === enter) {
+    openCard();
+  }
+});
+// закрываем попап при нажатие enter
+popupClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === enter) {
+    closeCard();
+  }
+});
+
