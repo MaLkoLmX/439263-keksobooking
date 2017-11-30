@@ -129,13 +129,24 @@ function openMap() {
   }
 }
 // открытие карточки
+// function openCard(evt) {
+//   if (evt.target.parentNode.classList.contains('map__pin--main') === true) {
+//     evt.target.parentNode.classList.contains.classList.remove('map__pin--main');
+//   } else {
+//     evt.target.parentNode.classList.contains.classList.add('map__pin--main');
+//     cardPopup.classList.remove('hidden');
+//   }
+// }
+
 function openCard() {
-  if (pins.classList.contains('map__pin--active')) { // если маркер содержит класс...
-    pins.classList.remove('map__pin--active'); // удаляем у маркера класс
-  } else {
-    pins.classList.add('map__pin--active'); // добавляем выбранному маркеру класс active
+  for (var i = 1; i < pins.length; i++) {
+    if (pins[i].classList.contains('map__pin--active') === true) { // если маркер содержит класс...
+      pins[i].classList.remove('map__pin--active'); // удаляем у маркера класс
+    } else {
+      pins[i].classList.add('map__pin--active'); // добавляем выбранному маркеру класс active
+      cardPopup.classList.remove('hidden'); // и показываем карточку
+    }
   }
-  cardPopup.classList.remove('hidden'); // и показываем карточку
   document.removeEventListener('keydown', onPopupEscPress);
 }
 // закрытие карточки
@@ -146,10 +157,10 @@ function closeCard() {
 // нажатие на главный маркер
 pinMain.addEventListener('click', function () {
   openMap();
-});
+})
 // нажатие на любой элемент соответствующий значению pins
-document.body.addEventListener('click', function (evt) {
-  if (evt.target.nodeName === pins && evt.keyCode === enter) {
+markers.addEventListener('click', function (evt) {
+  if (evt.target.nodeName === pins) {
     openCard();
   }
 });
