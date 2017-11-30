@@ -139,12 +139,15 @@ function openMap() {
 // }
 
 function openCard() {
-  for (var i = 1; i < pins.length; i++) {
-    if (pins[i].classList.contains('map__pin--active') === true) { // если маркер содержит класс...
-      pins[i].classList.remove('map__pin--active'); // удаляем у маркера класс
+  for (var i = 0; i < cardPopup.length; i++) {
+    cardPopup[i].classList.add('hidden');
+  }
+  for (var j = 1; j < pins.length; j++) {
+    if (pins[j].classList.contains('map__pin--active') === true) { // если маркер содержит класс...
+      pins[j].classList.remove('map__pin--active'); // удаляем у маркера класс
     } else {
-      pins[i].classList.add('map__pin--active'); // добавляем выбранному маркеру класс active
-      cardPopup.classList.remove('hidden'); // и показываем карточку
+      pins[j].classList.add('map__pin--active'); // добавляем выбранному маркеру класс active
+      cardPopup[j - 1].classList.remove('hidden'); // и показываем карточку
     }
   }
   document.removeEventListener('keydown', onPopupEscPress);
