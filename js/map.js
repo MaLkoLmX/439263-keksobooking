@@ -35,8 +35,8 @@ function getPlaceFeatures() {
 // Создаем массив объектов
 var ads = []; // Объекты
 // Создаем функцию для определения случаных значений карточки
-function getAds(index) { // в значение index будет записываться номер карточки
-  for (var i = 1; i < index; i++) {
+function getAds(ad) { // в значение index будет записываться номер карточки
+  for (var i = 1; i < ad; i++) {
     ads[i] = {
       author: {
         avatar: 'img/avatars/users0' + i + '.png',
@@ -74,30 +74,30 @@ function getY(y) {
 }
 
 // функция для заполнения шаблона карточки
-function renderMapMarker(index) { // не понимаю, как правильно применить переменную index
+function renderMapMarker(ad) { // не понимаю, как правильно применить переменную index
   var markerElement = pinTemplate.cloneNode(true);
-  var index = index + 1;
+  var index = ad + 1;
 
-  markerElement.style.left = getX(index.location.x);
-  markerElement.style.top = getY(index.location.y);
-  markerElement.querySelector('img').src = ads[getRandomNumber(1, 8)].author.avatar;
+  markerElement.style.left = getX(ad.location.x);
+  markerElement.style.top = getY(ad.location.y);
+  markerElement.querySelector('img').src = ad.author.avatar;
 
   markerElement.setAttribute('tabindex', 0);
-  markerElement.setAttribute('data-ad-number', index);
+  markerElement.setAttribute('data-ad-number', ad);
 
   return markerElement;
 }
-debugger
+
 // Карточка
-function renderCard(index) {
+function renderCard(ad) {
   // cardIndex = index || 1;
   var cardElement = cardTemplate.cloneNode(true);
   var cardElementP = cardElement.querySelectorAll('p');
   var list = cardElement.querySelector('.popup__features');
 
-  cardElement.querySelector('h3').textContent = index.offer.title;
-  cardElement.querySelector('small').textContent = index.offer.address;
-  cardElement.querySelector('.popup__price').textContent = index.offer.price;
+  cardElement.querySelector('h3').textContent = ad.offer.title;
+  cardElement.querySelector('small').textContent = ad.offer.address;
+  cardElement.querySelector('.popup__price').textContent = ad.offer.price;
 
   switch (type[getRandom(type)]) {
     case 'flat':
@@ -110,8 +110,8 @@ function renderCard(index) {
       cardElement.querySelector('h4').textContent = 'Дом';
   }
 
-  cardElementP[2].textContent = index.offer.rooms + ' для ' + index.offer.guests + ' гостей.';
-  cardElementP[3].textContent = 'Заезд после ' + index.offer.checkin + ', выезд до ' + index.offer.checkout;
+  cardElementP[2].textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей.';
+  cardElementP[3].textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   function getFeatures(feature) {
     return '<li class="feature feature--' + feature + '"></li>';
   };
@@ -119,19 +119,20 @@ function renderCard(index) {
   list.insertAdjacentHTML('afterBegin', getPlaceFeatures().map(getFeatures).join(''));
   cardElement.appendChild(list);
   cardElementP[4].textContent = [];
-  cardElement.querySelector('img').src = index.ads.author.avatar;
+  cardElement.querySelector('img').src = ad.author.avatar;
   return cardElement;
 }
-debugger
-ads = getAds(8);
-ads.forEach(function (item) {
-  fragment.appendChild(renderMapMarker(item));
-});
-markers.appendChild(fragment);
+/* Мы задаем номер массива
+из getAds() через ad  */
+function showCard(ad) {
+  for (var i = 0; i < ad; i++) {
+    fragment.appendChild(renderMapMarker(ads[i]));
+  }
+  fragment.appendChild(renderCard(ads[1]));
+  return fragment;
+}
 
-fragment.appendChild(renderCard(ads[0]));
-markers.appendChild(fragment);
-
+markers.appendChild(showCard(8));
 /* -------------------------------
 ----------------------------------
 -------Обработка событий ---------
