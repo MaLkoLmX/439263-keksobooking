@@ -34,8 +34,8 @@ function getPlaceFeatures() {
 
 // Создаем массив объектов
 var ads = []; // Объекты
-
-function getAds(index) {
+// Создаем функцию для определения случаных значений карточки
+function getAds(index) { // в значение index будет записываться номер карточки
   for (var i = 1; i < index; i++) {
     ads[i] = {
       author: {
@@ -74,7 +74,7 @@ function getY(y) {
 }
 
 // функция для заполнения шаблона карточки
-function renderMapMarker(index) {
+function renderMapMarker(index) { // не понимаю, как правильно применить переменную index
   var markerElement = pinTemplate.cloneNode(true);
   var index = index + 1;
 
