@@ -38,7 +38,7 @@ function getAds(ad) {
   for (var i = 1; i < ad; i++) {
     ads[i] = {
       author: {
-        avatar: 'img/avatars/users0' + i + '.png',
+        avatar: 'img/avatars/user0' + i + '.png',
       },
       offer: {
         title: title[getRandom(title)],
@@ -46,7 +46,7 @@ function getAds(ad) {
         price: getRandomNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь',
         type: type[getRandom(type)],
         rooms: getRandomNumber(1, 5),
-        quests: getRandomNumber(1, 10),
+        guests: getRandomNumber(1, 10),
         checkout: checkin[getRandom(checkin)],
         features: checkin[getRandom(checkin)],
         description: '',
@@ -60,7 +60,6 @@ function getAds(ad) {
   }
   return ads;
 };
-ads = getAds(9)
 
 // Смещение маркеров
 var coordX = 46;
@@ -84,7 +83,7 @@ function renderMapMarker(ad) {
 
   return markerElement;
 }
-
+debugger
 // Карточка
 function renderCard(ad) {
   var cardElement = cardTemplate.cloneNode(true);
@@ -119,12 +118,12 @@ function renderCard(ad) {
   return cardElement;
 }
 
-ads = getAds(9)
+ads = getAds(8)
 function showCard(ad) {
   for (var i = 0; i < ad; i++) {
     fragment.appendChild(renderMapMarker(ads[i]));
   }
-  fragment.appendChild(renderCard(ads[1]));
+  fragment.appendChild(renderCard(ads[getRandomNumber(1, 8)]));
   return fragment;
 }
 
