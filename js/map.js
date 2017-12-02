@@ -6,7 +6,7 @@ var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'cond
 var checkin = ['12:00', '13:00', '14:00'];
 
 var map = document.querySelector('.map'); // объявили карту
-
+map.classList.remove('map--faded');
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
 
@@ -34,8 +34,7 @@ function getPlaceFeatures() {
 
 // Создаем массив объектов
 var ads = []; // Объекты
-// Создаем функцию для определения случаных значений карточки
-function getAds(ad) { // в значение index будет записываться номер карточки
+function getAds(ad) {
   for (var i = 1; i < ad; i++) {
     ads[i] = {
       author: {
@@ -62,7 +61,7 @@ function getAds(ad) { // в значение index будет записыват
   return ads;
 };
 ads = getAds(9)
-console.log(ads[1].author.avatar);
+
 // Смещение маркеров
 var coordX = 46;
 var coordY = 62;
@@ -73,24 +72,21 @@ function getY(y) {
   return (y - coordY / 2) + 'px';
 }
 
-// функция для заполнения шаблона карточки
-function renderMapMarker(ad) { // не понимаю, как правильно применить переменную index
+
+function renderMapMarker(ad) {
   var markerElement = pinTemplate.cloneNode(true);
-  var index = ad + 1;
 
   markerElement.style.left = getX(ad.location.x);
   markerElement.style.top = getY(ad.location.y);
   markerElement.querySelector('img').src = ad.author.avatar;
 
   markerElement.setAttribute('tabindex', 0);
-  markerElement.setAttribute('data-ad-number', ad);
 
   return markerElement;
 }
 
 // Карточка
 function renderCard(ad) {
-  // cardIndex = index || 1;
   var cardElement = cardTemplate.cloneNode(true);
   var cardElementP = cardElement.querySelectorAll('p');
   var list = cardElement.querySelector('.popup__features');
@@ -122,8 +118,8 @@ function renderCard(ad) {
   cardElement.querySelector('img').src = ad.author.avatar;
   return cardElement;
 }
-/* Мы задаем номер массива
-из getAds() через ad  */
+
+ads = getAds(9)
 function showCard(ad) {
   for (var i = 0; i < ad; i++) {
     fragment.appendChild(renderMapMarker(ads[i]));
@@ -137,89 +133,3 @@ markers.appendChild(showCard(8));
 ----------------------------------
 -------Обработка событий ---------
 --------------------------------*/
-/*
-// клавиши
-var esc = 27;
-var enter = 13;
-
-var pinMain = map.querySelector('.map__pin--main'); // главный маркер
-var popupClose = map.querySelector('.popup__close'); // крестик
-
-// удалить с помошью ESC
-function onPopupEscPress(evt) {
-  if (evt.keyCode === esc) {
-    closeCard();
-  }
-}
-
-// скрыли маркеры
-var pins = map.querySelectorAll('.map__pin');
-for (var i = 1; i < pins.length; i++) {
-  pins[i].classList.add('hidden');
-}
-
-// скрыли карточку
-var cardPopup = map.querySelector('.map__card');
-cardPopup.classList.add('hidden');
-
-// Заблокировали поля для ввода
-var fieldset = document.querySelectorAll('fieldset'); // все поля ввода
-for (var j = 1; i < fieldset.length; i++) {
-  fieldset[j].disabled = true;
-}
-
-// открытие карты
-function openMap() {
-  var form = document.querySelector('.notice__form');
-  map.classList.remove('map--faded');
-  form.classList.remove('notice__form--disabled');
-  cardTemplate.classList.add('hidden');
-  pinTemplate.classList.remove('hidden');
-  for (i = 1; i < pins.length; i++) {
-    pins[i].classList.remove('hidden');
-  }
-  for (i = 0; i < fieldset.length; i++) {
-    fieldset[i].disabled = false;
-  }
-}
-
-// открытие карточки
-function openCard(parentElement, element) {
-  parentElement = parentElement || null;
-  if (parentElement.classList.contains('map__pin')) {
-    renderCard(element)
-
-    cardPopup.classList.remove('hidden');
-  }
-  document.removeEventListener('keydown', onPopupEscPress);
-}
-// закрытие карточки
-function closeCard() {
-  cardPopup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
-}
-
-// нажатие на главный маркер
-pinMain.addEventListener('click', function () {
-  openMap();
-})
-
-// нажатие на любой элемент соответствующий значению pins
-markers.addEventListener('click', function (evt) {
-  var targetElement = evt.target;
-  var parentElement = targetElement.parentElement;
-  var addIndex = parentElement.dataset.adNumber
-  var result = parentElement.classList.contains('map__pin--main') ? evt.preventDefault : openCard(parentElement, addIndex);
-  return result
-});
-
-// закрываем попап при нажатие enter
-popupClose.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === enter) {
-    closeCard();
-  }
-});
-popupClose.addEventListener('click', function () {
-  closeCard();
-});
-*/
