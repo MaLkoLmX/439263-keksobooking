@@ -33,7 +33,7 @@ function getPlaceFeatures() {
 }
 
 // Создаем массив объектов
-var ads = []; // Объекты
+var ads = [];
 function getAds(ad) {
   for (var i = 1; i < ad; i++) {
     ads[i] = {
@@ -75,9 +75,9 @@ function getY(y) {
 function renderMapMarker(ad) {
   var markerElement = pinTemplate.cloneNode(true);
 
-  markerElement.style.left = getX(ad.location.x);
-  markerElement.style.top = getY(ad.location.y);
-  markerElement.querySelector('img').src = ad.author.avatar;
+  markerElement.style.left = getX(getRandomNumber(300, 900));
+  markerElement.style.top = getY(getRandomNumber(100, 500));
+  markerElement.querySelector('img').src = 'img/avatars/user0' + ad + '.png';
 
   markerElement.setAttribute('tabindex', 0);
 
@@ -121,14 +121,10 @@ function renderCard(ad) {
 ads = getAds(8)
 function showCard(ad) {
   for (var i = 0; i < ad; i++) {
-    fragment.appendChild(renderMapMarker(ads[i]));
+    fragment.appendChild(renderMapMarker(i));
   }
   fragment.appendChild(renderCard(ads[getRandomNumber(1, 8)]));
   return fragment;
 }
 
 markers.appendChild(showCard(8));
-/* -------------------------------
-----------------------------------
--------Обработка событий ---------
---------------------------------*/
