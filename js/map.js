@@ -175,9 +175,6 @@ function closeCard() {
   document.removeEventListener('keydown', onPopupEscPress);
 }
 
-// скрываем карточу
-// cardPopup.classList.add('hidden');
-
 // Открываем карту
 var pinMain = map.querySelector('.map__pin--main'); // главный маркер
 pinMain.addEventListener('click', function () {
@@ -202,6 +199,9 @@ markers.addEventListener('click', function (evt) {
       }
     }
     pins[pinNumber].classList.add('map__pin--active');
+    if (markers.querySelector('.popup')) {
+      markers.removeChild(markers.querySelector('.popup'));
+    }
     markers.appendChild(showCard(pinNumber));
     // cardPopup.innerHTML = renderCard(ads[pinNumber]);
   }
