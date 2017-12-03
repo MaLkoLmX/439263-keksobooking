@@ -9,6 +9,9 @@ var map = document.querySelector('.map'); // объявили карту
 map.classList.remove('map--faded');
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
+var cardPopup = document.querySelector('template').content.querySelector('.popup');
+
+cardPopup.classList.add('hidden');
 
 var markers = document.querySelector('.map__pins'); // маркеры
 
@@ -35,10 +38,12 @@ function getPlaceFeatures() {
 // Создаем массив объектов
 var ads = [];
 function getAds(ad) {
+  var userIndex;
   for (var i = 1; i < ad; i++) {
+    userIndex = i + 1;
     ads[i] = {
       author: {
-        avatar: 'img/avatars/user0' + i + '.png',
+        avatar: 'img/avatars/user0' + userIndex + '.png',
       },
       offer: {
         title: title[getRandom(title)],
@@ -47,8 +52,9 @@ function getAds(ad) {
         type: type[getRandom(type)],
         rooms: getRandomNumber(1, 5),
         guests: getRandomNumber(1, 10),
+        checkin: checkin[getRandom(checkin)],
         checkout: checkin[getRandom(checkin)],
-        features: checkin[getRandom(checkin)],
+        features: getPlaceFeatures(),
         description: '',
         photos: []
       },
@@ -74,17 +80,21 @@ function getY(y) {
 
 function renderMapMarker(ad) {
   var markerElement = pinTemplate.cloneNode(true);
-
+  var userIndex = ad + 1;
   markerElement.style.left = getX(getRandomNumber(300, 900));
   markerElement.style.top = getY(getRandomNumber(100, 500));
-  markerElement.querySelector('img').src = 'img/avatars/user0' + ad + '.png';
-
+  markerElement.querySelector('img').src = 'img/avatars/user0' + userIndex + '.png';
+  markerElement.setAttribute('data-ad-number', userIndex);
   markerElement.setAttribute('tabindex', 0);
 
   return markerElement;
 }
-debugger
+
 // Карточка
+function getFeatures(feature) {
+  return '<li class="feature feature--' + feature + '"></li>';
+};
+
 function renderCard(ad) {
   var cardElement = cardTemplate.cloneNode(true);
   var cardElementP = cardElement.querySelectorAll('p');
@@ -107,9 +117,6 @@ function renderCard(ad) {
 
   cardElementP[2].textContent = ad.offer.rooms + ' для ' + ad.offer.guests + ' гостей.';
   cardElementP[3].textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-  function getFeatures(feature) {
-    return '<li class="feature feature--' + feature + '"></li>';
-  };
   list.innerHTML = '';
   list.insertAdjacentHTML('afterBegin', getPlaceFeatures().map(getFeatures).join(''));
   cardElement.appendChild(list);
@@ -119,12 +126,89 @@ function renderCard(ad) {
 }
 
 ads = getAds(8)
-function showCard(ad) {
+
+function showMarkers(ad) {
   for (var i = 0; i < ad; i++) {
     fragment.appendChild(renderMapMarker(i));
   }
-  fragment.appendChild(renderCard(ads[getRandomNumber(1, 8)]));
   return fragment;
 }
 
-markers.appendChild(showCard(8));
+markers.appendChild(showMarkers(8));
+
+function showCard() {
+  var index = getRandomNumber(1, 8);
+  fragment.appendChild(renderCard(ads[index]));
+  return fragment;
+}
+
+markers.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  var target = evt.target;
+  if (target.tagName === 'IMG') {
+    var parentElement = target.parentElement;
+    var pinNumber = parentElement.dataset.adNumber;
+    console.log(renderCard(ads[pinNumber]));
+    console.log(cardPopup.classList);
+    markers.appendChild(showCard());
+    cardPopup.classList.remove('hidden');
+  }
+});
+/*
+/*------------
+Обработка событий
+-----------*/
+/*
+var pinMain = map.querySelector('.map__pin--main'); // главный маркер
+
+// скрыли маркеры
+var pins = map.querySelectorAll('.map__pin');
+for (var i = 1; i < pins.length; i++) {
+  pins[i].classList.add('hidden');
+}
+
+// скрыли карточку
+var cardPopup = map.querySelector('.map__card');
+cardPopup.classList.add('hidden');
+
+// Заблокировали поля для ввода
+var fieldset = document.querySelectorAll('fieldset');
+for (var i = 1; i < fieldset.length; i++) {
+  fieldset[i].disabled = true;
+}
+
+// открытие карты
+function openMap() {
+  var form = document.querySelector('.notice__form');
+  map.classList.remove('map--faded');
+  form.classList.remove('notice__form--disabled');
+  cardTemplate.classList.add('hidden');
+  pinTemplate.classList.remove('hidden');
+  for (i = 1; i < pins.length; i++) {
+    pins[i].classList.remove('hidden');
+  }
+  for (i = 0; i < fieldset.length; i++) {
+    fieldset[i].disabled = false;
+  }
+}
+
+function openCard() {
+  cardPopup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+// Закрыть карточку
+var closeCard = function () {
+  cardPopup.classList.add('hidden');
+  if (currentPin !== false) {
+    currentPin.classList.remove('map__pin--active');
+    currentPin = false;
+  }
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+// нажатие на главный маркер
+pinMain.addEventListener('click', function () {
+  openMap();
+})
+*/
