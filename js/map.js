@@ -136,9 +136,9 @@ function showMarkers(ad) {
 
 markers.appendChild(showMarkers(8));
 
-function showCard() {
+function showCard(ad) {
   var index = getRandomNumber(1, 8);
-  fragment.appendChild(renderCard(ads[index]));
+  fragment.appendChild(renderCard(ads[ad]));
   return fragment;
 }
 
@@ -150,11 +150,11 @@ markers.addEventListener('click', function (evt) {
     var pinNumber = parentElement.dataset.adNumber;
     console.log(renderCard(ads[pinNumber]));
     console.log(cardPopup.classList);
-    markers.appendChild(showCard());
     cardPopup.classList.remove('hidden');
+    markers.appendChild(showCard(pinNumber));
   }
 });
-/*
+
 /*------------
 Обработка событий
 -----------*/
@@ -167,9 +167,9 @@ for (var i = 1; i < pins.length; i++) {
   pins[i].classList.add('hidden');
 }
 
-// скрыли карточку
-var cardPopup = map.querySelector('.map__card');
-cardPopup.classList.add('hidden');
+// // скрыли карточку
+// var cardPopup = map.querySelector('.map__card');
+// cardPopup.classList.add('hidden');
 
 // Заблокировали поля для ввода
 var fieldset = document.querySelectorAll('fieldset');
