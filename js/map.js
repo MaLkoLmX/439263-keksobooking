@@ -141,6 +141,7 @@ function showCard(ad) {
   fragment.appendChild(renderCard(ads[ad]));
   return fragment;
 }
+
 var pins = map.querySelectorAll('.map__pin');
 markers.addEventListener('click', function (evt) {
   evt.preventDefault();
@@ -148,14 +149,16 @@ markers.addEventListener('click', function (evt) {
   if (target.tagName === 'IMG') {
     var parentElement = target.parentElement;
     var pinNumber = parentElement.dataset.adNumber;
-    console.log(renderCard(ads[pinNumber]));
-    console.log(cardPopup.classList);
     cardPopup.classList.remove('hidden');
     markers.appendChild(showCard(pinNumber));
     pins[pinNumber].classList.add('map__pin--active');
+    for (var i = 0; i < pins.length; i++) {
+      if (pins[i].classList.contains('map__pin--active') && pins[i] !== target && pins[i].firstChild !== target) {
+        pins[i].classList.remove('map__pin--active');
+      }
+    }
   }
 });
-debugger
 /*------------
 Обработка событий
 -----------*/
