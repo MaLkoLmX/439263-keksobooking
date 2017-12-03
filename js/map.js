@@ -6,7 +6,7 @@ var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'cond
 var checkin = ['12:00', '13:00', '14:00'];
 
 var map = document.querySelector('.map'); // объявили карту
-map.classList.remove('map--faded');
+
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
 var cardPopup = document.querySelector('template').content.querySelector('.popup');
@@ -40,7 +40,7 @@ var ads = [];
 function getAds(ad) {
   var userIndex;
   for (var i = 1; i < ad; i++) {
-    userIndex = i + 1;
+    userIndex = i;
     ads[i] = {
       author: {
         avatar: 'img/avatars/user0' + userIndex + '.png',
@@ -125,7 +125,7 @@ function renderCard(ad) {
   return cardElement;
 }
 
-ads = getAds(8)
+ads = getAds(9)
 
 function showMarkers(ad) {
   for (var i = 0; i < ad; i++) {
@@ -137,11 +137,11 @@ function showMarkers(ad) {
 markers.appendChild(showMarkers(8));
 
 function showCard(ad) {
-  var index = getRandomNumber(1, 8);
+  // var index = getRandomNumber(1, 8);
   fragment.appendChild(renderCard(ads[ad]));
   return fragment;
 }
-
+var pins = map.querySelectorAll('.map__pin');
 markers.addEventListener('click', function (evt) {
   evt.preventDefault();
   var target = evt.target;
@@ -152,13 +152,13 @@ markers.addEventListener('click', function (evt) {
     console.log(cardPopup.classList);
     cardPopup.classList.remove('hidden');
     markers.appendChild(showCard(pinNumber));
+    pins[pinNumber].classList.add('map__pin--active');
   }
 });
-
+debugger
 /*------------
 Обработка событий
 -----------*/
-/*
 var pinMain = map.querySelector('.map__pin--main'); // главный маркер
 
 // скрыли маркеры
@@ -198,17 +198,9 @@ function openCard() {
 };
 
 // Закрыть карточку
-var closeCard = function () {
-  cardPopup.classList.add('hidden');
-  if (currentPin !== false) {
-    currentPin.classList.remove('map__pin--active');
-    currentPin = false;
-  }
-  document.removeEventListener('keydown', onPopupEscPress);
-};
 
 // нажатие на главный маркер
 pinMain.addEventListener('click', function () {
   openMap();
 })
-*/
+
