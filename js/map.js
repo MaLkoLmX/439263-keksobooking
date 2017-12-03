@@ -11,8 +11,6 @@ var pinTemplate = document.querySelector('template').content.querySelector('.map
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
 var cardPopup = document.querySelector('template').content.querySelector('.popup');
 
-cardPopup.classList.add('hidden');
-
 var markers = document.querySelector('.map__pins'); // маркеры
 
 var fragment = document.createDocumentFragment();
@@ -136,33 +134,15 @@ function showMarkers(ad) {
 
 markers.appendChild(showMarkers(8));
 
-function showCard(ad) {
-  // var index = getRandomNumber(1, 8);
-  fragment.appendChild(renderCard(ads[ad]));
-  return fragment;
-}
+//----------------------------------------
+var esc = 27;
+var enter = 13;
 
-var pins = map.querySelectorAll('.map__pin');
-markers.addEventListener('click', function (evt) {
-  evt.preventDefault();
-  var target = evt.target;
-  if (target.tagName === 'IMG') {
-    var parentElement = target.parentElement;
-    var pinNumber = parentElement.dataset.adNumber;
-    cardPopup.classList.remove('hidden');
-    markers.appendChild(showCard(pinNumber));
-    pins[pinNumber].classList.add('map__pin--active');
-    for (var i = 0; i < pins.length; i++) {
-      if (pins[i].classList.contains('map__pin--active') && pins[i] !== target && pins[i].firstChild !== target) {
-        pins[i].classList.remove('map__pin--active');
-      }
-    }
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === esc) {
+    closeCard();
   }
-});
-/*------------
-Обработка событий
------------*/
-var pinMain = map.querySelector('.map__pin--main'); // главный маркер
+};
 
 // скрыли маркеры
 var pins = map.querySelectorAll('.map__pin');
@@ -170,24 +150,18 @@ for (var i = 1; i < pins.length; i++) {
   pins[i].classList.add('hidden');
 }
 
-// // скрыли карточку
-// var cardPopup = map.querySelector('.map__card');
-// cardPopup.classList.add('hidden');
-
 // Заблокировали поля для ввода
 var fieldset = document.querySelectorAll('fieldset');
 for (var i = 1; i < fieldset.length; i++) {
   fieldset[i].disabled = true;
 }
 
-// открытие карты
+// Открыли карту
 function openMap() {
   var form = document.querySelector('.notice__form');
   map.classList.remove('map--faded');
   form.classList.remove('notice__form--disabled');
-  cardTemplate.classList.add('hidden');
-  pinTemplate.classList.remove('hidden');
-  for (i = 1; i < pins.length; i++) {
+  for (var i = 1; i < pins.length; i++) {
     pins[i].classList.remove('hidden');
   }
   for (i = 0; i < fieldset.length; i++) {
@@ -195,15 +169,53 @@ function openMap() {
   }
 }
 
-function openCard() {
-  cardPopup.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
-};
-
 // Закрыть карточку
+function closeCard() {
+  cardPopup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+}
 
-// нажатие на главный маркер
+// скрываем карточу
+// cardPopup.classList.add('hidden');
+
+// Открываем карту
+var pinMain = map.querySelector('.map__pin--main'); // главный маркер
 pinMain.addEventListener('click', function () {
   openMap();
 })
 
+// Создаем карточку
+function showCard(ad) {
+  fragment.appendChild(renderCard(ads[ad]));
+  return fragment;
+}
+
+markers.addEventListener('click', function (evt) {
+  evt.preventDefault();
+  var target = evt.target;
+  if (target.tagName === 'IMG') {
+    var parentElement = target.parentElement;
+    var pinNumber = parentElement.dataset.adNumber;
+    for (var i = 0; i < pins.length; i++) {
+      if (pins[i].classList.contains('map__pin--active') && pins[i] !== target && pins[i].firstChild !== target) {
+        pins[i].classList.remove('map__pin--active');
+      }
+    }
+    pins[pinNumber].classList.add('map__pin--active');
+    markers.appendChild(showCard(pinNumber));
+    // cardPopup.innerHTML = renderCard(ads[pinNumber]);
+  }
+});
+
+var сardClose = cardPopup.querySelector('.popup__close'); // крест
+// закрываем карточку нажатием на крест
+сardClose.addEventListener('click', function () {
+  closeCard();
+});
+
+// Закрываем карточку нажатием на enter
+сardClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === enter) {
+    closeCard();
+  }
+});
