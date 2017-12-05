@@ -14,7 +14,7 @@ var cardPopup = document.querySelector('template').content.querySelector('.popup
 var markers = document.querySelector('.map__pins'); // маркеры
 
 var fragment = document.createDocumentFragment();
-
+var cardElement = cardTemplate.cloneNode(true);
 function getRandom(rand) {
   return Math.floor(Math.random() * rand.length);
 }
@@ -147,14 +147,14 @@ var enter = 13;
 var pins = map.querySelectorAll('.map__pin');
 var fieldset = document.querySelectorAll('fieldset');
 var pinMain = map.querySelector('.map__pin--main'); // главный маркер
-var close = cardPopup.querySelector('.popup__close'); // крест
+var close = cardElement.querySelector('.popup__close'); // крест
 
 function onPopupEscPress(evt) {
   if (evt.keyCode === esc) {
     closeCard();
   }
 }
-console.log(close);
+console.log(cardElement);
 // Открыли карту
 function openMap() {
   var form = document.querySelector('.notice__form');
@@ -170,7 +170,7 @@ function openMap() {
 
 // Закрыть карточку
 function closeCard() {
-  cardPopup.classList.add('hidden');
+  cardElement.classList.add('hidden');
   // markers.removeChild(markers.querySelector('.popup'));
   for (var i = 1; i < pins.length; i++) {
     pins[i].classList.remove('map__pin--active');
@@ -192,7 +192,7 @@ for (i = 1; i < fieldset.length; i++) {
 pinMain.addEventListener('click', function () {
   openMap();
 });
-debugger
+
 // показываем карточку нажатием на выбранный маркер
 markers.addEventListener('click', function (evt) {
   evt.preventDefault();
