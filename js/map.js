@@ -9,7 +9,7 @@ var map = document.querySelector('.map'); // объявили карту
 
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
-// var cardPopup = document.querySelector('template').content.querySelector('.popup');
+var cardPopup = document.querySelector('template').content.querySelector('.popup');
 
 var markers = document.querySelector('.map__pins'); // маркеры
 
@@ -147,14 +147,14 @@ var enter = 13;
 var pins = map.querySelectorAll('.map__pin');
 var fieldset = document.querySelectorAll('fieldset');
 var pinMain = map.querySelector('.map__pin--main'); // главный маркер
-var close = cardTemplate.querySelector('.popup__close'); // крест
+var close = cardPopup.querySelector('.popup__close'); // крест
 
 function onPopupEscPress(evt) {
   if (evt.keyCode === esc) {
     closeCard();
   }
 }
-
+console.log(close);
 // Открыли карту
 function openMap() {
   var form = document.querySelector('.notice__form');
@@ -170,7 +170,8 @@ function openMap() {
 
 // Закрыть карточку
 function closeCard() {
-  markers.removeChild(markers.querySelector('.popup'));
+  cardPopup.classList.add('hidden');
+  // markers.removeChild(markers.querySelector('.popup'));
   for (var i = 1; i < pins.length; i++) {
     pins[i].classList.remove('map__pin--active');
   }
@@ -191,24 +192,26 @@ for (i = 1; i < fieldset.length; i++) {
 pinMain.addEventListener('click', function () {
   openMap();
 });
-
+debugger
 // показываем карточку нажатием на выбранный маркер
 markers.addEventListener('click', function (evt) {
   evt.preventDefault();
   var target = evt.target;
-  if (target.tagName === 'IMG') {
-    var parentElement = target.parentElement;
-    var pinNumber = parentElement.dataset.adNumber;
-    parentElement.classList.add('map__pin--active');
-    for (i = 0; i < pins.length; i++) {
-      if (pins[i].classList.contains('map__pin--active') && pins[i] !== target && pins[i].firstChild !== target) {
-        pins[i].classList.remove('map__pin--active');
+  if (target.getAttribute('class') !== 'map__pin map__pin--main' && (target.getAttribute('class') === 'map__pin' || target.tagName === 'IMG' && target.parentNode.getAttribute('class') !== 'map__pin map__pin--main' && target.getAttribute('class') !== 'popup__avatar')) {
+    if (target.tagName === 'IMG') {
+      var parentElement = target.parentElement;
+      var pinNumber = parentElement.dataset.adNumber;
+      parentElement.classList.add('map__pin--active');
+      for (i = 0; i < pins.length; i++) {
+        if (pins[i].classList.contains('map__pin--active') && pins[i] !== target && pins[i].firstChild !== target) {
+          pins[i].classList.remove('map__pin--active');
+        }
       }
+      if (markers.querySelector('.popup')) {
+        markers.removeChild(markers.querySelector('.popup'));
+      }
+      markers.appendChild(showCard(pinNumber));
     }
-    if (markers.querySelector('.popup')) {
-      markers.removeChild(markers.querySelector('.popup'));
-    }
-    markers.appendChild(showCard(pinNumber));
   }
   document.removeEventListener('keydown', onPopupEscPress);
 });
