@@ -154,7 +154,7 @@ function onPopupEscPress(evt) {
     closeCard();
   }
 }
-console.log(cardElement);
+
 // Открыли карту
 function openMap() {
   var form = document.querySelector('.notice__form');
@@ -166,12 +166,12 @@ function openMap() {
   for (i = 0; i < fieldset.length; i++) {
     fieldset[i].disabled = false;
   }
+  document.addEventListener('keydown', onPopupEscPress);
 }
 
 // Закрыть карточку
 function closeCard() {
-  cardElement.classList.add('hidden');
-  // markers.removeChild(markers.querySelector('.popup'));
+  markers.removeChild(markers.querySelector('.popup'));
   for (var i = 1; i < pins.length; i++) {
     pins[i].classList.remove('map__pin--active');
   }
@@ -192,7 +192,7 @@ for (i = 1; i < fieldset.length; i++) {
 pinMain.addEventListener('click', function () {
   openMap();
 });
-
+debugger
 // показываем карточку нажатием на выбранный маркер
 markers.addEventListener('click', function (evt) {
   evt.preventDefault();
@@ -213,12 +213,16 @@ markers.addEventListener('click', function (evt) {
       markers.appendChild(showCard(pinNumber));
     }
   }
-  document.removeEventListener('keydown', onPopupEscPress);
 });
 
 // закрываем карточку нажатием на крест
-close.addEventListener('click', function () {
-  closeCard();
+// close.addEventListener('click', function () {
+//   closeCard();
+// });
+markers.addEventListener('click', function (evt) {
+  if (evt.target.tagName === 'BUTTON' && evt.target.classList.contains('popup__close')) {
+    closeCard();
+  }
 });
 
 // Закрываем карточку нажатием на enter
