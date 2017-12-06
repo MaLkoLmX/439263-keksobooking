@@ -1,5 +1,8 @@
 'use strict';
 // Объявили переменные
+var esc = 27;
+var enter = 13;
+
 var title = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var type = ['flat', 'house', 'bungalo'];
 var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -9,12 +12,12 @@ var map = document.querySelector('.map'); // объявили карту
 
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
-var cardPopup = document.querySelector('template').content.querySelector('.popup');
 
 var markers = document.querySelector('.map__pins'); // маркеры
 
 var fragment = document.createDocumentFragment();
 var cardElement = cardTemplate.cloneNode(true);
+
 function getRandom(rand) {
   return Math.floor(Math.random() * rand.length);
 }
@@ -36,12 +39,10 @@ function getPlaceFeatures() {
 // Создаем массив объектов
 var ads = [];
 function getAds(ad) {
-  var userIndex;
   for (var i = 1; i < ad; i++) {
-    userIndex = i;
     ads[i] = {
       author: {
-        avatar: 'img/avatars/user0' + userIndex + '.png',
+        avatar: 'img/avatars/user0' + i + '.png',
       },
       offer: {
         title: title[getRandom(title)],
@@ -94,7 +95,6 @@ function getFeatures(feature) {
 }
 
 function renderCard(ad) {
-  var cardElement = cardTemplate.cloneNode(true);
   var cardElementP = cardElement.querySelectorAll('p');
   var list = cardElement.querySelector('.popup__features');
 
@@ -139,11 +139,7 @@ function showCard(ad) {
   fragment.appendChild(renderCard(ads[ad]));
   return fragment;
 }
-
 // ----------------------------------------
-var esc = 27;
-var enter = 13;
-
 var pins = map.querySelectorAll('.map__pin');
 var fieldset = document.querySelectorAll('fieldset');
 var pinMain = map.querySelector('.map__pin--main'); // главный маркер
@@ -178,6 +174,11 @@ function closeCard() {
   document.removeEventListener('keydown', onPopupEscPress);
 }
 
+function openCard(pin) {
+  markers.appendChild(showCard(pin));
+  document.removeEventListener('keydown', onPopupEscPress);
+}
+
 // скрыли маркеры
 for (var i = 1; i < pins.length; i++) {
   pins[i].classList.add('hidden');
@@ -192,7 +193,7 @@ for (i = 1; i < fieldset.length; i++) {
 pinMain.addEventListener('click', function () {
   openMap();
 });
-debugger
+
 // показываем карточку нажатием на выбранный маркер
 markers.addEventListener('click', function (evt) {
   evt.preventDefault();
@@ -208,17 +209,24 @@ markers.addEventListener('click', function (evt) {
         }
       }
       if (markers.querySelector('.popup')) {
-        markers.removeChild(markers.querySelector('.popup'));
+        closeCard();
       }
-      markers.appendChild(showCard(pinNumber));
+      openCard(pinNumber);
     }
+  }
+  document.addEventListener('keydown', onPopupEscPress);
+});
+
+markers.addEventListener('keydown', function (evt) {
+  var target = evt.target;
+  if (evt.keyCode === enter && target.tagName === 'BUTTON' && target.classList.contains('map__pin') && target.getAttribute('class') !== 'popup__close' && target.getAttribute('class') !== 'map__pin map__pin--main') {
+    if (markers.querySelector('.popup')) {
+      markers.removeChild(markers.querySelector('.popup'));
+    }
+    openCard(target.dataset.adNumber);
   }
 });
 
-// закрываем карточку нажатием на крест
-// close.addEventListener('click', function () {
-//   closeCard();
-// });
 markers.addEventListener('click', function (evt) {
   if (evt.target.tagName === 'BUTTON' && evt.target.classList.contains('popup__close')) {
     closeCard();
