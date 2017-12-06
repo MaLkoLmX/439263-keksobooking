@@ -239,3 +239,63 @@ close.addEventListener('keydown', function (evt) {
     closeCard();
   }
 });
+
+// -------------------------------------
+var tymeIn = document.getElementById('timein');
+var timeOut = document.getElementById('timeout');
+var addressId = document.getElementById('address');
+var typeId = document.getElementById('type');
+var price = document.getElementById('price');
+var room = document.getElementById('room_number');
+var capacity = document.getElementById('capacity');
+var titleId = document.getElementById('title');
+
+addressId.value = 'Далеко от моря';
+
+tymeIn.addEventListener('change', function () {
+  timeOut.selectedIndex = tymeIn.selectedIndex;
+  tymeIn.value = timeOut.value;
+});
+
+price.value = '0';
+
+typeId.addEventListener('change', function () {
+  switch (typeId.selectedIndex) {
+    case 0:
+      price.value = '0';
+      break;
+    case 1:
+      price.value = '1000';
+      break;
+    case 2:
+      price.value = '5000';
+      break;
+    case 3:
+      price.value = '10000';
+      break;
+  }
+});
+
+capacity.selectedIndex = 2;
+
+room.addEventListener('change', function () {
+  switch (room.selectedIndex) {
+    case 0:
+      capacity.selectedIndex = 2;
+      break;
+    case 1:
+      capacity.selectedIndex = 1;
+      break;
+    case 2:
+      capacity.selectedIndex = 0;
+      break;
+    case 3:
+      capacity.selectedIndex = 3;
+      break;
+  }
+});
+
+titleId.addEventListener('invalid', function () {
+  titleId.style.borderWidth = '5px';
+  titleId.style.borderColor = 'red';
+});
