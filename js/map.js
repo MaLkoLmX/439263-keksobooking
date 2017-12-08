@@ -294,8 +294,15 @@ room.addEventListener('change', function () {
       break;
   }
 });
-
+function invalidFields(field) {
+  field.style.borderWidth = '5px';
+  field.style.borderColor = 'red';
+}
 titleId.addEventListener('invalid', function () {
-  titleId.style.borderWidth = '5px';
-  titleId.style.borderColor = 'red';
+  invalidFields(titleId);
 });
+
+price.addEventListener('invalid', function () {
+  invalidFields(price);
+});
+
