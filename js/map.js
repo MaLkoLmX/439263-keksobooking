@@ -1,5 +1,4 @@
 'use strict';
-// Объявили переменные
 var esc = 27;
 var enter = 13;
 
@@ -8,12 +7,12 @@ var type = ['flat', 'house', 'bungalo'];
 var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var checkin = ['12:00', '13:00', '14:00'];
 
-var map = document.querySelector('.map'); // объявили карту
+var map = document.querySelector('.map');
 
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
 
-var markers = document.querySelector('.map__pins'); // маркеры
+var markers = document.querySelector('.map__pins');
 
 var fragment = document.createDocumentFragment();
 var cardElement = cardTemplate.cloneNode(true);
