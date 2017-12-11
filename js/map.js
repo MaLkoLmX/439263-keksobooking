@@ -1,5 +1,4 @@
 'use strict';
-// Объявили переменные
 var esc = 27;
 var enter = 13;
 
@@ -8,12 +7,12 @@ var type = ['flat', 'house', 'bungalo'];
 var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var checkin = ['12:00', '13:00', '14:00'];
 
-var map = document.querySelector('.map'); // объявили карту
+var map = document.querySelector('.map');
 
 var pinTemplate = document.querySelector('template').content.querySelector('.map__pin'); // шаблон маркера
 var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
 
-var markers = document.querySelector('.map__pins'); // маркеры
+var markers = document.querySelector('.map__pins');
 
 var fragment = document.createDocumentFragment();
 var cardElement = cardTemplate.cloneNode(true);
@@ -239,3 +238,97 @@ close.addEventListener('keydown', function (evt) {
     closeCard();
   }
 });
+
+// -------------------------------------
+var tymeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+var addressId = document.querySelector('#address');
+var typeId = document.querySelector('#type');
+var price = document.querySelector('#price');
+var room = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
+var titleId = document.querySelector('#title');
+
+addressId.value = 'Далеко от моря';
+
+tymeIn.addEventListener('change', function () {
+  timeOut.selectedIndex = tymeIn.selectedIndex;
+  tymeIn.value = timeOut.value;
+});
+
+price.value = '0';
+
+typeId.addEventListener('change', function () {
+  switch (typeId.selectedIndex) {
+    case 0:
+      price.value = '0';
+      break;
+    case 1:
+      price.value = '1000';
+      break;
+    case 2:
+      price.value = '5000';
+      break;
+    case 3:
+      price.value = '10000';
+      break;
+  }
+});
+
+capacity.selectedIndex = 2;
+
+room.addEventListener('change', function () {
+  for (i = 0; i < room.length; i++) {
+    capacity.options[i].disabled = false;
+  }
+  switch (room.selectedIndex) {
+    case 0:
+      capacity.selectedIndex = 2;
+      capacity.options[0].disabled = true;
+      capacity.options[1].disabled = true;
+      capacity.options[3].disabled = true;
+      break;
+    case 1:
+      capacity.selectedIndex = 1;
+      capacity.options[0].disabled = true;
+      capacity.options[3].disabled = true;
+      break;
+    case 2:
+      capacity.selectedIndex = 0;
+      capacity.options[3].disabled = true;
+      break;
+    case 3:
+      capacity.selectedIndex = 3;
+      capacity.options[0].disabled = true;
+      capacity.options[1].disabled = true;
+      capacity.options[2].disabled = true;
+      break;
+  }
+});
+
+function invalidFields(field) {
+  field.style.borderWidth = '5px';
+  field.style.borderColor = 'red';
+}
+
+function removeBorder(field) {
+  field.style.borderWidth = '';
+  field.style.borderColor = '';
+}
+
+titleId.addEventListener('invalid', function () {
+  invalidFields(titleId);
+});
+
+titleId.addEventListener('change', function () {
+  removeBorder(titleId);
+});
+
+price.addEventListener('invalid', function () {
+  invalidFields(price);
+});
+
+price.addEventListener('change', function () {
+  removeBorder(price);
+});
+
