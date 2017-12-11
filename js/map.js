@@ -240,14 +240,14 @@ close.addEventListener('keydown', function (evt) {
 });
 
 // -------------------------------------
-var tymeIn = document.getElementById('timein');
-var timeOut = document.getElementById('timeout');
-var addressId = document.getElementById('address');
-var typeId = document.getElementById('type');
-var price = document.getElementById('price');
-var room = document.getElementById('room_number');
-var capacity = document.getElementById('capacity');
-var titleId = document.getElementById('title');
+var tymeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+var addressId = document.querySelector('#address');
+var typeId = document.querySelector('#type');
+var price = document.querySelector('#price');
+var room = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
+var titleId = document.querySelector('#title');
 
 addressId.value = 'Далеко от моря';
 
@@ -278,30 +278,57 @@ typeId.addEventListener('change', function () {
 capacity.selectedIndex = 2;
 
 room.addEventListener('change', function () {
+  for (i = 0; i < room.length; i++) {
+    capacity.options[i].disabled = false;
+  }
   switch (room.selectedIndex) {
     case 0:
       capacity.selectedIndex = 2;
+      capacity.options[0].disabled = true;
+      capacity.options[1].disabled = true;
+      capacity.options[3].disabled = true;
       break;
     case 1:
       capacity.selectedIndex = 1;
+      capacity.options[0].disabled = true;
+      capacity.options[3].disabled = true;
       break;
     case 2:
       capacity.selectedIndex = 0;
+      capacity.options[3].disabled = true;
       break;
     case 3:
       capacity.selectedIndex = 3;
+      capacity.options[0].disabled = true;
+      capacity.options[1].disabled = true;
+      capacity.options[2].disabled = true;
       break;
   }
 });
+
 function invalidFields(field) {
   field.style.borderWidth = '5px';
   field.style.borderColor = 'red';
 }
+
+function removeBorder(field) {
+  field.style.borderWidth = '';
+  field.style.borderColor = '';
+}
+
 titleId.addEventListener('invalid', function () {
   invalidFields(titleId);
 });
 
+titleId.addEventListener('change', function () {
+  removeBorder(titleId);
+});
+
 price.addEventListener('invalid', function () {
   invalidFields(price);
+});
+
+price.addEventListener('change', function () {
+  removeBorder(price);
 });
 
