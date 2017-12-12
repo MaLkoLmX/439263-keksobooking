@@ -2,14 +2,11 @@
 (function () {
   var tymeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
-  var addressId = document.querySelector('#address');
   var typeId = document.querySelector('#type');
   var price = document.querySelector('#price');
   var room = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
   var titleId = document.querySelector('#title');
-
-  addressId.value = 'Далеко от моря';
 
   tymeIn.addEventListener('change', function () {
     timeOut.selectedIndex = tymeIn.selectedIndex;
