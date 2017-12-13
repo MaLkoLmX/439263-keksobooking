@@ -15,8 +15,8 @@
       return (y - coordY / 2) + 'px';
     }
 
-    markerElement.style.left = getX(window.getRandomNumber(300, 900));
-    markerElement.style.top = getY(window.getRandomNumber(100, 500));
+    markerElement.style.left = getX(window.util.getRandomNumber(300, 900));
+    markerElement.style.top = getY(window.util.getRandomNumber(100, 500));
     markerElement.querySelector('img').src = 'img/avatars/user0' + userIndex + '.png';
     markerElement.setAttribute('data-ad-number', userIndex);
     markerElement.setAttribute('tabindex', 0);

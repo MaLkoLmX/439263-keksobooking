@@ -15,7 +15,7 @@
     cardElement.querySelector('small').textContent = ad.offer.address;
     cardElement.querySelector('.popup__price').textContent = ad.offer.price;
 
-    switch (type[window.getRandom(type)]) {
+    switch (type[window.util.getRandom(type)]) {
       case 'flat':
         cardElement.querySelector('h4').textContent = 'Квартира';
         break;

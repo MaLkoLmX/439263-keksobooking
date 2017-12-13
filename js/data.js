@@ -8,7 +8,7 @@
   window.getPlaceFeatures = function () {
     var result = [];
     for (var i = 0; i < featuresList.length; i++) {
-      if (window.getRandomNumber(0, 5)) {
+      if (window.util.getRandomNumber(0, 5)) {
         result.push(featuresList[i]);
       }
     }
@@ -23,21 +23,21 @@
           avatar: 'img/avatars/user0' + i + '.png',
         },
         offer: {
-          title: title[window.getRandom(title)],
-          address: window.getRandomNumber(300, 900) + ', ' + window.getRandomNumber(100, 500),
-          price: window.getRandomNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь',
-          type: type[window.getRandom(type)],
-          rooms: window.getRandomNumber(1, 5),
-          guests: window.getRandomNumber(1, 10),
-          checkin: checkin[window.getRandom(checkin)],
-          checkout: checkin[window.getRandom(checkin)],
+          title: title[window.util.getRandom(title)],
+          address: window.util.getRandomNumber(300, 900) + ', ' + window.util.getRandomNumber(100, 500),
+          price: window.util.getRandomNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь',
+          type: type[window.util.getRandom(type)],
+          rooms: window.util.getRandomNumber(1, 5),
+          guests: window.util.getRandomNumber(1, 10),
+          checkin: checkin[window.util.getRandom(checkin)],
+          checkout: checkin[window.util.getRandom(checkin)],
           features: window.getPlaceFeatures(),
           description: '',
           photos: []
         },
         location: {
-          x: window.getRandomNumber(300, 900),
-          y: window.getRandomNumber(100, 500)
+          x: window.util.getRandomNumber(300, 900),
+          y: window.util.getRandomNumber(100, 500)
         }
       };
     }
