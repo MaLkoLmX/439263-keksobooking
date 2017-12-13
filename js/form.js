@@ -64,18 +64,18 @@
   });
 
   titleId.addEventListener('invalid', function () {
-    window.invalidFields(titleId);
+    window.util.invalidFields(titleId);
   });
 
   titleId.addEventListener('change', function () {
-    window.removeBorder(titleId);
+    window.util.removeBorder(titleId);
   });
 
   price.addEventListener('invalid', function () {
-    window.invalidFields(price);
+    window.util.invalidFields(price);
   });
 
   price.addEventListener('change', function () {
-    window.removeBorder(price);
+    window.util.removeBorder(price);
   });
 })();

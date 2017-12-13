@@ -136,7 +136,10 @@
       if ((pinMain.offsetTop - shift.y) > 99 && (pinMain.offsetTop - shift.y) < 501) {
         pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
       }
-      pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      if ((pinMain.offsetLeft - shift.x) > -1 && (pinMain.offsetLeft - shift.x) < 1201) {
+        pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
+      }
+
       addressId.value = parseInt((pinMain.style.top), 10) + 84 + ', ' + parseInt((pinMain.style.left), 10) + 32;
     }
 
