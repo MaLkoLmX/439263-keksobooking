@@ -1,9 +1,11 @@
 'use strict';
 (function () {
   var title = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-  var type = ['flat', 'house', 'bungalo'];
+  window.type = ['flat', 'house', 'bungalo'];
   var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var checkin = ['12:00', '13:00', '14:00'];
+  window.checkin = ['12:00', '13:00', '14:00'];
+  window.type = ['bugalo', 'flat', 'house', 'palace'];
+  window.price = ['0', '1000', '5000', '10000'];
 
   window.getPlaceFeatures = function () {
     var result = [];
@@ -26,11 +28,11 @@
           title: title[window.util.getRandom(title)],
           address: window.util.getRandomNumber(300, 900) + ', ' + window.util.getRandomNumber(100, 500),
           price: window.util.getRandomNumber(1000, 1000000) + String.fromCharCode(8381) + '/ночь',
-          type: type[window.util.getRandom(type)],
+          type: window.type[window.util.getRandom(window.type)],
           rooms: window.util.getRandomNumber(1, 5),
           guests: window.util.getRandomNumber(1, 10),
-          checkin: checkin[window.util.getRandom(checkin)],
-          checkout: checkin[window.util.getRandom(checkin)],
+          checkin: window.checkin[window.util.getRandom(window.checkin)],
+          checkout: window.checkin[window.util.getRandom(window.checkin)],
           features: window.getPlaceFeatures(),
           description: '',
           photos: []
