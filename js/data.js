@@ -4,8 +4,8 @@
   window.type = ['flat', 'house', 'bungalo'];
   var featuresList = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   window.checkin = ['12:00', '13:00', '14:00'];
-  window.type = ['bugalo', 'flat', 'house', 'palace'];
-  window.price = ['0', '1000', '5000', '10000'];
+  window.type = ['bungalo', 'flat', 'house', 'palace'];
+  window.price = [1000, 0, 5000, 10000];
 
   window.getPlaceFeatures = function () {
     var result = [];

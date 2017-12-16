@@ -15,21 +15,25 @@
       return (y - coordY / 2) + 'px';
     }
 
-    markerElement.style.left = getX(window.util.getRandomNumber(300, 900));
-    markerElement.style.top = getY(window.util.getRandomNumber(100, 500));
-    markerElement.querySelector('img').src = 'img/avatars/user0' + userIndex + '.png';
+    // markerElement.style.left = getX(window.util.getRandomNumber(300, 900));
+    // markerElement.style.top = getY(window.util.getRandomNumber(100, 500));
+    // markerElement.querySelector('img').src = 'img/avatars/user0' + userIndex + '.png';
+    markerElement.style.left = getX(ad.location.x);
+    markerElement.style.top = getY(ad.location.y);
+    markerElement.querySelector('img').src = ad.author.avatar;
     markerElement.setAttribute('data-ad-number', userIndex);
     markerElement.setAttribute('tabindex', 0);
 
     return markerElement;
   }
 
-  function showMarkers(ad) {
-    for (var i = 0; i < ad; i++) {
-      window.fragment.appendChild(renderMapMarker(i));
+  function showMarkers(pins) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < 5; i++) {
+      fragment.appendChild(renderMapMarker(pins[i]));
     }
-    return window.fragment;
+    window.markers.appendChild(fragment);
   }
 
-  window.markers.appendChild(showMarkers(8));
+  window.backend.load(showMarkers, window.errorHandler);
 })();
