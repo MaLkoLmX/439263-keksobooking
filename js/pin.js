@@ -27,13 +27,13 @@
     return markerElement;
   }
 
-  function showMarkers(pins) {
+  window.showMarkers = function (pins) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < 5; i++) {
       fragment.appendChild(renderMapMarker(pins[i]));
     }
     window.markers.appendChild(fragment);
-  }
+  };
 
-  window.backend.load(showMarkers, window.errorHandler);
+  // window.backend.load(window.showMarkers, window.errorHandler);
 })();

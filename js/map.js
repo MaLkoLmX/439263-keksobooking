@@ -30,6 +30,7 @@
       fieldset[i].disabled = false;
     }
     document.addEventListener('keydown', onPopupEscPress);
+    window.backend.load(window.showMarkers, window.errorHandler);
   }
 
   // Закрыть карточку
@@ -42,17 +43,17 @@
   }
 
   function openCard(pin) {
-    window.markers.appendChild(window.showCard(pin));
+    window.markers.appendChild(window.renderCard(pin));
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
   // скрыли маркеры
-  for (var i = 1; i < pins.length; i++) {
-    pins[i].classList.add('hidden');
-  }
+  // for (var i = 1; i < pins.length; i++) {
+  //   pins[i].classList.add('hidden');
+  // }
 
   // Заблокировали поля для ввода
-  for (i = 1; i < fieldset.length; i++) {
+  for (var i = 1; i < fieldset.length; i++) {
     fieldset[i].disabled = true;
   }
 
@@ -108,7 +109,7 @@
   });
 
   window.ads = [];
-  window.ads = window.getAds(9);
+  window.ads = window.getAds();
 
   pinMain.style.zIndex = '1';
 

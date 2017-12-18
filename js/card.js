@@ -31,7 +31,7 @@ window.renderCard = function (ad) {
   list.innerHTML = '';
   list.insertAdjacentHTML('afterBegin', ad.offer.features.map(getFeatures).join(''));
   cardElement.appendChild(list);
-  cardElementP[4].textContent = [];
+  cardElementP[4].textContent = ad.offer.description;
   cardElement.querySelector('img').src = ad.author.avatar;
   return cardElement;
 };
