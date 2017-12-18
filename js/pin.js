@@ -14,10 +14,6 @@
     function getY(y) {
       return (y - coordY / 2) + 'px';
     }
-
-    // markerElement.style.left = getX(window.util.getRandomNumber(300, 900));
-    // markerElement.style.top = getY(window.util.getRandomNumber(100, 500));
-    // markerElement.querySelector('img').src = 'img/avatars/user0' + userIndex + '.png';
     markerElement.style.left = getX(ad.location.x);
     markerElement.style.top = getY(ad.location.y);
     markerElement.querySelector('img').src = ad.author.avatar;
