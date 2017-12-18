@@ -25,7 +25,7 @@
 
   window.showMarkers = function (pins) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 8; i++) {
       fragment.appendChild(renderMapMarker(pins[i]));
     }
     window.markers.appendChild(fragment);

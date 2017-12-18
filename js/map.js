@@ -43,7 +43,7 @@
   }
 
   function openCard(pin) {
-    window.markers.appendChild(window.renderCard(pin));
+    window.markers.appendChild(window.renderCard(pin[i]));
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
@@ -107,9 +107,6 @@
       closeCard();
     }
   });
-
-  window.ads = [];
-  window.ads = window.getAds();
 
   pinMain.style.zIndex = '1';
 
