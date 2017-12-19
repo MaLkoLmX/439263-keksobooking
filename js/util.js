@@ -1,6 +1,7 @@
 'use strict';
 window.fragment = document.createDocumentFragment();
 window.markers = document.querySelector('.map__pins');
+window.numbers = 8;
 
 window.errorHandler = function (error) {
   var node = document.createElement('div');
@@ -35,4 +36,3 @@ window.util = (function () {
     }
   };
 })();
-
