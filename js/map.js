@@ -29,6 +29,9 @@
     for (i = 0; i < fieldset.length; i++) {
       fieldset[i].disabled = false;
     }
+    for (i = 0; i < window.numbers; i++) {
+      map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
+    }
     document.addEventListener('keydown', onPopupEscPress);
   }
 
@@ -42,17 +45,13 @@
   }
 
   function openCard(pin) {
-    window.markers.appendChild(window.showCard(pin));
+    window.markers.appendChild(window.renderCard(window.ads[pin]));
+
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
-  // скрыли маркеры
-  for (var i = 1; i < pins.length; i++) {
-    pins[i].classList.add('hidden');
-  }
-
   // Заблокировали поля для ввода
-  for (i = 1; i < fieldset.length; i++) {
+  for (var i = 1; i < fieldset.length; i++) {
     fieldset[i].disabled = true;
   }
 
@@ -64,22 +63,20 @@
   // показываем карточку нажатием на выбранный маркер
   window.markers.addEventListener('click', function (evt) {
     evt.preventDefault();
+
     var target = evt.target;
+    var currentPin = target.closest('.map__pin');
+    var pinNumber = currentPin.dataset.number;
+
     if (target.getAttribute('class') !== 'map__pin map__pin--main' && (target.getAttribute('class') === 'map__pin' || target.tagName === 'IMG' && target.parentNode.getAttribute('class') !== 'map__pin map__pin--main' && target.getAttribute('class') !== 'popup__avatar')) {
-      if (target.tagName === 'IMG') {
-        var parentElement = target.parentElement;
-        var pinNumber = parentElement.dataset.adNumber;
-        parentElement.classList.add('map__pin--active');
-        for (i = 0; i < pins.length; i++) {
-          if (pins[i].classList.contains('map__pin--active') && pins[i] !== target && pins[i].firstChild !== target) {
-            pins[i].classList.remove('map__pin--active');
-          }
-        }
-        if (window.markers.querySelector('.popup')) {
-          closeCard();
-        }
-        openCard(pinNumber);
+      if (map.querySelector('.map__pin--active')) {
+        map.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
+      currentPin.classList.add('map__pin--active');
+      if (window.markers.querySelector('.popup')) {
+        closeCard();
+      }
+      openCard(pinNumber);
     }
     document.addEventListener('keydown', onPopupEscPress);
   });
@@ -107,11 +104,8 @@
     }
   });
 
-  window.ads = [];
-  window.ads = window.getAds(9);
-
   pinMain.style.zIndex = '1';
-
+  // ----------------------------------------------------------------------------
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
