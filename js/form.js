@@ -3,24 +3,27 @@
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
   var typeId = document.querySelector('#type');
-  var price = document.querySelector('#price');
+  var priceId = document.querySelector('#price');
   var room = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
   var titleId = document.querySelector('#title');
   var addressId = document.querySelector('#address');
   var description = document.querySelector('#description');
   var form = document.querySelector('.notice__form');
+  var checkin = ['12:00', '13:00', '14:00'];
+  var type = ['bungalo', 'flat', 'house', 'palace'];
+  var price = ['1000', '0', '5000', '10000'];
 
   var syncValues = function (element, value) {
     element.value = value;
   };
 
   timeIn.addEventListener('change', function () {
-    window.synchronizeFields(timeIn, timeOut, window.checkin, window.checkin, syncValues);
+    window.synchronizeFields(timeIn, timeOut, checkin, checkin, syncValues);
   });
 
   typeId.addEventListener('change', function () {
-    window.synchronizeFields(typeId, price, window.type, window.price, syncValues);
+    window.synchronizeFields(typeId, priceId, type, price, syncValues);
   });
 
   capacity.selectedIndex = 2;
@@ -62,18 +65,18 @@
     window.util.removeBorder(titleId);
   });
 
-  price.addEventListener('invalid', function () {
-    window.util.invalidFields(price);
+  priceId.addEventListener('invalid', function () {
+    window.util.invalidFields(priceId);
   });
 
-  price.addEventListener('change', function () {
-    window.util.removeBorder(price);
+  priceId.addEventListener('change', function () {
+    window.util.removeBorder(priceId);
   });
 
   // _______________________
   var onSuccess = function () {
     titleId.value = '';
-    price.value = '';
+    priceId.value = '1000';
     addressId.value = '';
     typeId.value = 'flat';
     timeIn.value = '12:00';
@@ -81,6 +84,7 @@
     room.value = '1';
     capacity.value = '1';
     description.value = '';
+    document.querySelector('.map__pin--main').style = 'top: 375; left: 467';
   };
 
   form.addEventListener('submit', function (evt) {

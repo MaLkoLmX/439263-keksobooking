@@ -4,7 +4,6 @@
   var enter = 13;
 
   var map = document.querySelector('.map');
-  var pins = map.querySelectorAll('.map__pin');
   var fieldset = document.querySelectorAll('fieldset');
   var pinMain = map.querySelector('.map__pin--main'); // главный маркер
   var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
@@ -18,31 +17,39 @@
     }
   }
 
+  window.window.showPin = function (number) {
+    for (i = 0; i < number; i++) {
+      map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
+    }
+  };
+
   // Открыли карту
   function openMap() {
     var form = document.querySelector('.notice__form');
     map.classList.remove('map--faded');
     form.classList.remove('notice__form--disabled');
-    for (var i = 1; i < pins.length; i++) {
-      pins[i].classList.remove('hidden');
-    }
     for (i = 0; i < fieldset.length; i++) {
       fieldset[i].disabled = false;
     }
-    for (i = 0; i < window.numbers; i++) {
-      map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
-    }
+    window.showPin(window.numbers);
+
     document.addEventListener('keydown', onPopupEscPress);
   }
 
   // Закрыть карточку
   function closeCard() {
     window.markers.removeChild(window.markers.querySelector('.popup'));
-    for (var i = 1; i < pins.length; i++) {
-      pins[i].classList.remove('map__pin--active');
-    }
+    // map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+
     document.removeEventListener('keydown', onPopupEscPress);
   }
+
+  window.closeCard = function () {
+    window.markers.removeChild(window.markers.querySelector('.popup'));
+    // map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+
+    document.removeEventListener('keydown', onPopupEscPress);
+  };
 
   function openCard(pin) {
     window.markers.appendChild(window.renderCard(window.ads[pin]));
@@ -66,9 +73,9 @@
 
     var target = evt.target;
     var currentPin = target.closest('.map__pin');
-    var pinNumber = currentPin.dataset.number;
 
     if (target.getAttribute('class') !== 'map__pin map__pin--main' && (target.getAttribute('class') === 'map__pin' || target.tagName === 'IMG' && target.parentNode.getAttribute('class') !== 'map__pin map__pin--main' && target.getAttribute('class') !== 'popup__avatar')) {
+      var pinNumber = currentPin.dataset.number;
       if (map.querySelector('.map__pin--active')) {
         map.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
@@ -94,6 +101,7 @@
   window.markers.addEventListener('click', function (evt) {
     if (evt.target.tagName === 'BUTTON' && evt.target.classList.contains('popup__close')) {
       closeCard();
+      map.querySelector('.map__pin--active').classList.remove('map__pin--active');
     }
   });
 
@@ -105,7 +113,7 @@
   });
 
   pinMain.style.zIndex = '1';
-  // ----------------------------------------------------------------------------
+
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 

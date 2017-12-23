@@ -1,7 +1,7 @@
 'use strict';
 window.fragment = document.createDocumentFragment();
 window.markers = document.querySelector('.map__pins');
-window.numbers = 8;
+window.numbers = 5;
 
 window.errorHandler = function (error) {
   var node = document.createElement('div');
