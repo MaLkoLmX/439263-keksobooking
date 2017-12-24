@@ -17,7 +17,7 @@
     }
   }
 
-  window.window.showPin = function (number) {
+  window.showPin = function (number) {
     for (i = 0; i < number; i++) {
       map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
     }
@@ -46,7 +46,7 @@
 
   window.closeCard = function () {
     window.markers.removeChild(window.markers.querySelector('.popup'));
-    // map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
 
     document.removeEventListener('keydown', onPopupEscPress);
   };
