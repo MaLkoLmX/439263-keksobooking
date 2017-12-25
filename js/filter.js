@@ -25,7 +25,7 @@
   function showPin() {
     var map = document.querySelector('.map');
     for (var i = 0; i < window.ads.length; i++) {
-      map.querySelectorAll('.map__pin')[i].classList.remove('hidden');
+      map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
     }
   }
 
@@ -48,40 +48,19 @@
     }
 
     // --------------------------ФИЛЬТР ЦЕНЫ
-    // function getPrices() {
-    //   if (filterPrice.value !== 'any') {
-    //     results = results.filter(function (it) {
-    //       switch (filterType.value) {
-    //         case 'middle':
-    //           return it.offer.price >= 10000 && it.offer.price <= 50000;
-    //           break;
-    //         case 'low':
-    //           return it.offer.price < 10000;
-    //           break;
-    //         case 'high':
-    //           return it.offer.price >= 50000;
-    //           break;
-    //       }
-    //     });
-    //   }
-    //   return results;
-    // };
-
     function getPrices() {
       if (filterPrice.value !== 'any') {
         results = results.filter(function (it) {
-          switch (true) {
-            case it.offer.price < 10000:
-              return 'low';
-            case it.offer.price > 50000:
-              return 'high';
-            default:
-              return 'middle';
-          }
+          var values = {
+            'middle': it.offer.price >= 10000 && it.offer.price <= 50000,
+            'low': it.offer.price < 10000,
+            'high': it.offer.price > 50000
+          };
+          return values[filterPrice.value];
         });
       }
       return results;
-    }
+    };
 
     // --------------------------ФИЛЬТР ПРЕИМУЩЕСТВ
     function getFeatures() {

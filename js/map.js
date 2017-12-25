@@ -32,6 +32,7 @@
       fieldset[i].disabled = false;
     }
     window.showPin(window.numbers);
+
     document.addEventListener('keydown', onPopupEscPress);
   }
 
