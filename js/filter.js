@@ -22,9 +22,9 @@
     });
   }
 
-  function showPin(number) {
+  function showPin() {
     var map = document.querySelector('.map');
-    for (var i = 0; i < number; i++) {
+    for (var i = 0; i < 10; i++) {
       map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
     }
   }
@@ -68,20 +68,16 @@
     // };
 
     function getPrices() {
-      if (filterPrice.value !== 'any') {
-        results = results.filter(function (it) {
-          switch (true) {
-            case it.offer.price >= 10000 && it.offer.price <= 50000:
-              return 'middle';
-            case it.offer.price < 10000:
-              return 'low';
-            case it.offer.price >= 50000:
-              return 'high';
-            default:
-              return 'any';
-          }
-        });
-      }
+      results = results.filter(function (it) {
+        switch (true) {
+          case it.offer.price < 10000:
+            return 'low';
+          case it.offer.price > 50000:
+            return 'high';
+          default:
+            return 'middle';
+        }
+      });
       return results;
     }
 
@@ -109,7 +105,7 @@
     getPrices(); // применили фильтр по цене
     getFeatures(); // применили фильтр преимуществ
     window.showMarkers(results); // показали пины с результатом записанном п каждом фильтре
-    showPin(10);
+    showPin();
   }
   // -----------------------------ФУНКЦИЯ ДЕБОУНС
   // var lastTimeout;
