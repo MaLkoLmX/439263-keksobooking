@@ -24,8 +24,8 @@
 
   function showPin() {
     var map = document.querySelector('.map');
-    for (var i = 0; i < 10; i++) {
-      map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
+    for (var i = 0; i < window.ads.length; i++) {
+      map.querySelectorAll('.map__pin')[i].classList.remove('hidden');
     }
   }
 
@@ -68,16 +68,18 @@
     // };
 
     function getPrices() {
-      results = results.filter(function (it) {
-        switch (true) {
-          case it.offer.price < 10000:
-            return 'low';
-          case it.offer.price > 50000:
-            return 'high';
-          default:
-            return 'middle';
-        }
-      });
+      if (filterPrice.value !== 'any') {
+        results = results.filter(function (it) {
+          switch (true) {
+            case it.offer.price < 10000:
+              return 'low';
+            case it.offer.price > 50000:
+              return 'high';
+            default:
+              return 'middle';
+          }
+        });
+      }
       return results;
     }
 
