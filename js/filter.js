@@ -53,7 +53,7 @@
     var limit = 5;
     var pins = window.markers.querySelectorAll('.map__pin');
     for (var i = 0; i < window.totalPins.length; i++) {
-      if (results.indexOf(window.totalPins[i]) !== -1 && limit > 0 && pins[i] !== mainPin) {
+      if (results.indexOf(window.totalPins[i - 1]) !== -1 && limit > 0 && pins[i] !== mainPin) {
         pins[i].classList.remove('hidden');
         limit--;
       }
