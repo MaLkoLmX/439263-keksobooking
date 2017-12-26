@@ -49,13 +49,6 @@
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
-
-  function openCard(pin) {
-    window.markers.appendChild(window.card.renderCard(window.totalPins[pin]));
-
-    document.removeEventListener('keydown', onPopupEscPress);
-  }
-
   function blockFields() {
     for (var i = 1; i < fieldset.length; i++) {
       fieldset[i].disabled = true;
@@ -68,12 +61,9 @@
     openMap();
   });
 
-  window.markers.addEventListener('click', function (evt) {
-    evt.preventDefault();
-
+  function openCard(evt) {
     var target = evt.target;
     var currentPin = target.closest('.map__pin');
-
     if (target.getAttribute('class') !== 'map__pin map__pin--main' && (target.getAttribute('class') === 'map__pin' || target.tagName === 'IMG' && target.parentNode.getAttribute('class') !== 'map__pin map__pin--main' && target.getAttribute('class') !== 'popup__avatar')) {
       var pinNumber = currentPin.dataset.number;
       if (map.querySelector('.map__pin--active')) {
@@ -83,20 +73,20 @@
         closeCard();
       }
       currentPin.classList.add('map__pin--active');
-      openCard(pinNumber);
+      window.markers.appendChild(window.card.renderCard(window.totalPins[pinNumber]));
     }
+  }
+
+  window.markers.addEventListener('click', function (evt) {
+    evt.preventDefault();
+
+    openCard(evt);
 
     document.addEventListener('keydown', onPopupEscPress);
   });
 
   window.markers.addEventListener('keydown', function (evt) {
-    var target = evt.target;
-    if (evt.keyCode === enter && target.tagName === 'BUTTON' && target.classList.contains('map__pin') && target.getAttribute('class') !== 'popup__close' && target.getAttribute('class') !== 'map__pin map__pin--main') {
-      if (window.markers.querySelector('.popup')) {
-        window.markers.removeChild(window.markers.querySelector('.popup'));
-      }
-      openCard(target.dataset.adNumber);
-    }
+    openCard(evt);
   });
 
   window.markers.addEventListener('click', function (evt) {
