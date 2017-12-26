@@ -1,13 +1,15 @@
 'use strict';
 (function () {
   var URL;
+  var timeOut = 100000;
+  var errorCode = 200;
 
   function setup(onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      return xhr.status === 200 ? onLoad(xhr.response) : onError(xhr.response);
+      return xhr.status === errorCode ? onLoad(xhr.response) : onError(xhr.response);
     });
 
     xhr.addEventListener('error', function () {
@@ -18,7 +20,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 100000;
+    xhr.timeout = timeOut;
 
     return xhr;
   }

@@ -18,20 +18,14 @@
     element.value = value;
   }
 
-  timeIn.addEventListener('change', function () {
-    window.synchronizeFields(timeIn, timeOut, checkin, checkin, syncValues);
-  });
+  function defaultCapacity() {
+    capacity.selectedIndex = 2;
+    capacity.options[0].disabled = true;
+    capacity.options[1].disabled = true;
+    capacity.options[3].disabled = true;
+  }
 
-  typeId.addEventListener('change', function () {
-    window.synchronizeFields(typeId, priceId, type, price, syncValues);
-  });
-
-  capacity.selectedIndex = 2;
-  capacity.options[0].disabled = true;
-  capacity.options[1].disabled = true;
-  capacity.options[3].disabled = true;
-
-  room.addEventListener('change', function () {
+  function syncCapacity() {
     for (var i = 0; i < room.length; i++) {
       capacity.options[i].disabled = false;
     }
@@ -59,6 +53,20 @@
         capacity.options[2].disabled = true;
         break;
     }
+  }
+
+  defaultCapacity();
+
+  timeIn.addEventListener('change', function () {
+    window.synchronizeFields(timeIn, timeOut, checkin, checkin, syncValues);
+  });
+
+  typeId.addEventListener('change', function () {
+    window.synchronizeFields(typeId, priceId, type, price, syncValues);
+  });
+
+  room.addEventListener('change', function () {
+    syncCapacity();
   });
 
   titleId.addEventListener('invalid', function () {
@@ -78,7 +86,7 @@
   });
 
   // _______________________
-  var onSuccess = function () {
+  function onSuccess() {
     titleId.value = '';
     priceId.value = '1000';
     addressId.value = '';
@@ -89,10 +97,10 @@
     capacity.value = '1';
     description.value = '';
     document.querySelector('.map__pin--main').style = 'top: 375; left: 467';
-  };
+  }
 
   form.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(form), onSuccess, window.errorHandler);
+    window.backend.save(new FormData(form), onSuccess, window.util.errorHandler);
     evt.preventDefault();
   });
 })();

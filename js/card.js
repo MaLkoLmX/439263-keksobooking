@@ -1,26 +1,26 @@
 'use strict';
 (function () {
   var getType = {
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalo: 'Бунгало',
-    palace: 'Дворец'
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало',
+    'palace': 'Дворец'
   };
 
-  window.renderCard = function (ad) {
+  function getFeatures(feature) {
+    return '<li class="feature feature--' + feature + '"></li>';
+  }
+
+  function getPictures(picture) {
+    return '<li><img src="' + picture + '"; width=50; height=50></li>';
+  }
+
+  function renderCard(ad) {
     var cardTemplate = document.querySelector('template').content.querySelector('.map__card'); // шаблон карты
     var cardElement = cardTemplate.cloneNode(true);
     var cardElementP = cardElement.querySelectorAll('p');
     var listFeatures = cardElement.querySelector('.popup__features');
     var listPictures = cardElement.querySelector('.popup__pictures');
-
-    function getFeatures(feature) {
-      return '<li class="feature feature--' + feature + '"></li>';
-    }
-
-    var getPictures = function (picture) {
-      return '<li><img src="' + picture + '"; width=50; height=50></li>';
-    };
 
     cardElement.querySelector('h3').textContent = ad.offer.title;
     cardElement.querySelector('small').textContent = ad.offer.address;
@@ -37,5 +37,9 @@
     cardElementP[4].textContent = ad.offer.description;
     cardElement.querySelector('img').src = ad.author.avatar;
     return cardElement;
+  }
+
+  window.card = {
+    renderCard: renderCard
   };
 })();

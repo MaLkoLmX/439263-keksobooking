@@ -10,6 +10,9 @@
   var cardElement = cardTemplate.cloneNode(true);
   var close = cardElement.querySelector('.popup__close'); // крест
   var addressId = document.querySelector('#address');
+  window.markers = document.querySelector('.map__pins');
+
+  var numbers = 5;
 
   function onPopupEscPress(evt) {
     if (evt.keyCode === esc) {
@@ -17,21 +20,21 @@
     }
   }
 
-  window.showPin = function (number) {
-    for (i = 0; i < number; i++) {
+  function showPin(number) {
+    for (var i = 0; i < number; i++) {
       map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
     }
-  };
+  }
 
   // Открыли карту
   function openMap() {
     var form = document.querySelector('.notice__form');
     map.classList.remove('map--faded');
     form.classList.remove('notice__form--disabled');
-    for (i = 0; i < fieldset.length; i++) {
+    for (var i = 0; i < fieldset.length; i++) {
       fieldset[i].disabled = false;
     }
-    window.showPin(window.numbers);
+    showPin(numbers);
 
     document.addEventListener('keydown', onPopupEscPress);
   }
@@ -39,35 +42,32 @@
   // Закрыть карточку
   function closeCard() {
     window.markers.removeChild(window.markers.querySelector('.popup'));
-    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    if (map.querySelector('.map__pin--active')) {
+      map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    }
 
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
-  window.closeCard = function () {
-    window.markers.removeChild(window.markers.querySelector('.popup'));
-    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
-
-    document.removeEventListener('keydown', onPopupEscPress);
-  };
 
   function openCard(pin) {
-    window.markers.appendChild(window.renderCard(window.ads[pin]));
+    window.markers.appendChild(window.card.renderCard(window.totalPins[pin]));
 
     document.removeEventListener('keydown', onPopupEscPress);
   }
 
-  // Заблокировали поля для ввода
-  for (var i = 1; i < fieldset.length; i++) {
-    fieldset[i].disabled = true;
+  function blockFields() {
+    for (var i = 1; i < fieldset.length; i++) {
+      fieldset[i].disabled = true;
+    }
   }
 
-  // Открываем карту
+  blockFields();
+
   pinMain.addEventListener('click', function () {
     openMap();
   });
 
-  // показываем карточку нажатием на выбранный маркер
   window.markers.addEventListener('click', function (evt) {
     evt.preventDefault();
 
@@ -79,12 +79,13 @@
       if (map.querySelector('.map__pin--active')) {
         map.querySelector('.map__pin--active').classList.remove('map__pin--active');
       }
-      currentPin.classList.add('map__pin--active');
       if (window.markers.querySelector('.popup')) {
         closeCard();
       }
+      currentPin.classList.add('map__pin--active');
       openCard(pinNumber);
     }
+
     document.addEventListener('keydown', onPopupEscPress);
   });
 
@@ -116,6 +117,11 @@
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
+    var topY = 99;
+    var topX = 501;
+    var leftY = -1;
+    var leftX = 1201;
+
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY
@@ -134,10 +140,10 @@
         y: moveEvt.clientY
       };
 
-      if ((pinMain.offsetTop - shift.y) > 99 && (pinMain.offsetTop - shift.y) < 501) {
+      if ((pinMain.offsetTop - shift.y) > topY && (pinMain.offsetTop - shift.y) < topX) {
         pinMain.style.top = (pinMain.offsetTop - shift.y) + 'px';
       }
-      if ((pinMain.offsetLeft - shift.x) > -1 && (pinMain.offsetLeft - shift.x) < 1201) {
+      if ((pinMain.offsetLeft - shift.x) > leftY && (pinMain.offsetLeft - shift.x) < leftX) {
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
       }
 
