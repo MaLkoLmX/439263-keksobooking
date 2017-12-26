@@ -30,5 +30,10 @@
     window.ads = pins;
   };
 
-  window.backend.load(window.showMarkers, window.errorHandler);
+  function savePins(pins) {
+    window.totalPins = pins;
+    window.showMarkers(pins);
+  }
+
+  window.backend.load(savePins, window.errorHandler);
 })();

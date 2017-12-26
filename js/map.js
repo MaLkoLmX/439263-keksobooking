@@ -39,7 +39,7 @@
   // Закрыть карточку
   function closeCard() {
     window.markers.removeChild(window.markers.querySelector('.popup'));
-    // map.querySelector('.map__pin--active').classList.remove('map__pin--active');
+    map.querySelector('.map__pin--active').classList.remove('map__pin--active');
 
     document.removeEventListener('keydown', onPopupEscPress);
   }
@@ -101,7 +101,6 @@
   window.markers.addEventListener('click', function (evt) {
     if (evt.target.tagName === 'BUTTON' && evt.target.classList.contains('popup__close')) {
       closeCard();
-      map.querySelector('.map__pin--active').classList.remove('map__pin--active');
     }
   });
 

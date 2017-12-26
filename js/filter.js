@@ -17,15 +17,20 @@
     var pins = pinsContainer.querySelectorAll('.map__pin');
     pins.forEach(function (it) {
       if (it !== mainPin) {
-        pinsContainer.removeChild(it);
+        it.classList.add('hidden');
+        // pinsContainer.removeChild(it);
       }
     });
   }
 
-  function showPin() {
-    var map = document.querySelector('.map');
-    for (var i = 0; i < window.ads.length; i++) {
-      map.querySelectorAll('.map__pin')[i + 1].classList.remove('hidden');
+  function showPin(results) {
+    var limit = 5;
+    var pins = pinsContainer.querySelectorAll('.map__pin');
+    for (var i = 0; i < window.totalPins.length; i++) {
+      if (results.indexOf(window.totalPins[i]) !== -1 && limit > 0 && pins[i] !== mainPin) {
+        pins[i].classList.remove('hidden');
+        limit--;
+      }
     }
   }
 
@@ -33,7 +38,7 @@
   function getFilter() {
 
     // РЕЗУЛЬТАТ ПОСЛЕ ФИЛЬТРАЦИИ В КОТОРЫЙ БУДЕМ ВСЕ ПЕРЕДАВАТЬ
-    var results = window.ads;
+    var results = window.totalPins;
     // console.log(results);
 
     // --------------------------ФИЛЬТР ТИПОВ
@@ -60,7 +65,7 @@
         });
       }
       return results;
-    };
+    }
 
     // --------------------------ФИЛЬТР ПРЕИМУЩЕСТВ
     function getFeatures() {
@@ -85,23 +90,24 @@
     getValue(filterGuests.value, 'guests'); // применили фильтр по гостям
     getPrices(); // применили фильтр по цене
     getFeatures(); // применили фильтр преимуществ
-    window.showMarkers(results); // показали пины с результатом записанном п каждом фильтре
-    showPin();
+    // window.showMarkers(results); // показали пины с результатом записанном п каждом фильтре
+    showPin(results);
   }
-  // -----------------------------ФУНКЦИЯ ДЕБОУНС
-  // var lastTimeout;
-  // function debounce(it) {
-  //   if (lastTimeout) {
-  //     window.clearTimeout(lastTimeout);
-  //   }
-  //   lastTimeout = window.setTimeout(function () {
-  //     it();
-  //   }, 10);
-  // }
 
-  // ОБРАБОТЧИК ИЗМЕНЕНИЯ ЗНАЧЕНИЯ ФИЛЬТРА
-  // c дебоунсом постоянная ошибка. не знаю, что делать
+  function debounce(callback, wait) {
+    var timeout = null;
+    var callbackArgs = null;
 
-  // filters.addEventListener('change', debounce(getFilter));
-  filters.addEventListener('change', getFilter);
+    function later() {
+      callback.apply(null, callbackArgs);
+    }
+
+    return function () {
+      callbackArgs = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  filters.addEventListener('change', debounce(getFilter, 500));
 })();

@@ -14,9 +14,9 @@
   var type = ['bungalo', 'flat', 'house', 'palace'];
   var price = ['1000', '0', '5000', '10000'];
 
-  var syncValues = function (element, value) {
+  function syncValues(element, value) {
     element.value = value;
-  };
+  }
 
   timeIn.addEventListener('change', function () {
     window.synchronizeFields(timeIn, timeOut, checkin, checkin, syncValues);
@@ -27,11 +27,15 @@
   });
 
   capacity.selectedIndex = 2;
+  capacity.options[0].disabled = true;
+  capacity.options[1].disabled = true;
+  capacity.options[3].disabled = true;
 
   room.addEventListener('change', function () {
     for (var i = 0; i < room.length; i++) {
       capacity.options[i].disabled = false;
     }
+
     switch (room.selectedIndex) {
       case 0:
         capacity.selectedIndex = 2;
