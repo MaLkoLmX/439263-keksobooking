@@ -1,7 +1,7 @@
 'use strict';
 (function () {
-  var esc = 27;
-  var enter = 13;
+  var ESC = 27;
+  var ENTER = 13;
 
   var map = document.querySelector('.map');
   var fieldset = document.querySelectorAll('fieldset');
@@ -15,7 +15,7 @@
   var numbers = 5;
 
   function onPopupEscPress(evt) {
-    if (evt.keyCode === esc) {
+    if (evt.keyCode === ESC) {
       closeCard();
     }
   }
@@ -34,6 +34,7 @@
     for (var i = 0; i < fieldset.length; i++) {
       fieldset[i].disabled = false;
     }
+
     showPin(numbers);
 
     document.addEventListener('keydown', onPopupEscPress);
@@ -75,6 +76,8 @@
       currentPin.classList.add('map__pin--active');
       window.markers.appendChild(window.card.renderCard(window.totalPins[pinNumber]));
     }
+
+    document.addEventListener('keydown', onPopupEscPress);
   }
 
   window.markers.addEventListener('click', function (evt) {
@@ -95,9 +98,9 @@
     }
   });
 
-  // Закрываем карточку нажатием на enter
+  // Закрываем карточку нажатием на ENTER
   close.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === enter) {
+    if (evt.keyCode === ENTER) {
       closeCard();
     }
   });
@@ -111,6 +114,9 @@
     var topX = 501;
     var leftY = -1;
     var leftX = 1201;
+
+    var height = 84;
+    var width = 32;
 
     var startCoords = {
       x: evt.clientX,
@@ -137,7 +143,7 @@
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
       }
 
-      addressId.value = parseInt((pinMain.style.top), 10) + 84 + ', ' + parseInt((pinMain.style.left), 10) + 32;
+      addressId.value = parseInt((pinMain.style.top), 10) + height + ', ' + parseInt((pinMain.style.left), 10) + width;
     }
 
     function onMouseUp(upEvt) {

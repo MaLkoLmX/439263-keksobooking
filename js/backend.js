@@ -1,15 +1,33 @@
 'use strict';
 (function () {
-  var URL;
-  var timeOut = 100000;
-  var errorCode = 200;
+  var URL = 'https://1510.dump.academy/keksobooking';
+
+  var TIME_OUT = 100000;
+
+  var status = {
+    'ERROR': 200,
+    'INVALID': 400,
+    'NOT_FOUND': 404
+  };
 
   function setup(onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      return xhr.status === errorCode ? onLoad(xhr.response) : onError(xhr.response);
+      switch (xhr.status) {
+        case status.ERROR:
+          onLoad(xhr.response);
+          break;
+        case status.INVALID:
+          onError('Неверный запрос');
+          break;
+        case status.NOT_FOUND:
+          onError('Ничего не найдено');
+          break;
+        default:
+          onError('Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText);
+      }
     });
 
     xhr.addEventListener('error', function () {
@@ -20,7 +38,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = timeOut;
+    xhr.timeout = TIME_OUT;
 
     return xhr;
   }
@@ -28,8 +46,6 @@
   window.backend = (function () {
     return {
       save: function (data, onLoad, onError) {
-        URL = 'https://1510.dump.academy/keksobooking';
-
         var xhr = setup(onLoad, onError);
 
         xhr.open('POST', URL);
@@ -37,11 +53,9 @@
       },
 
       load: function (onLoad, onError) {
-        URL = 'https://1510.dump.academy/keksobooking/data';
-
         var xhr = setup(onLoad, onError);
 
-        xhr.open('GET', URL);
+        xhr.open('GET', URL + '/data');
         xhr.send();
       }
     };

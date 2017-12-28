@@ -18,6 +18,10 @@
     element.value = value;
   }
 
+  function syncMin(element, min) {
+    element.min = min;
+  }
+
   function defaultCapacity() {
     capacity.selectedIndex = 2;
     capacity.options[0].disabled = true;
@@ -61,8 +65,12 @@
     window.synchronizeFields(timeIn, timeOut, checkin, checkin, syncValues);
   });
 
+  timeOut.addEventListener('change', function () {
+    window.synchronizeFields(timeOut, timeIn, checkin, checkin, syncValues);
+  });
+
   typeId.addEventListener('change', function () {
-    window.synchronizeFields(typeId, priceId, type, price, syncValues);
+    window.synchronizeFields(typeId, priceId, type, price, syncMin);
   });
 
   room.addEventListener('change', function () {
